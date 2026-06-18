@@ -1,7 +1,7 @@
 {
   "installCommand": "pnpm install --no-frozen-lockfile",
   "buildCommand": "pnpm --filter planos-site build",
-  "outputDirectory": "dist",
+  "outputDirectory": "artifacts/site/dist",
   "framework": "vite",
   "functions": {
     "api/site-content.ts": {
