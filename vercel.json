@@ -1,21 +1,9 @@
 {
   "installCommand": "pnpm install --no-frozen-lockfile",
-  "buildCommand": "pnpm --filter planos-site build",
-  "outputDirectory": "artifacts/site/dist",
+  "buildCommand": "cd artifacts/planos-saude && pnpm run build",
+  "outputDirectory": "artifacts/planos-saude/dist",
   "framework": "vite",
-  "functions": {
-    "api/site-content.ts": {
-      "runtime": "nodejs22.x"
-    },
-    "api/auth.ts": {
-      "runtime": "nodejs22.x"
-    }
-  },
   "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
-    },
     {
       "source": "/(.*)",
       "destination": "/index.html"
