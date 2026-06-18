@@ -231,7 +231,7 @@ export default function Home() {
             </motion.p>
 
             <motion.p variants={fadeUp} className="text-base text-muted-foreground/70 mb-10 max-w-xl mx-auto">
-              Atendemos por WhatsApp — rápido, sem burocracia e sem compromisso.
+              Atendemos por WhatsApp rápido, sem burocracia e sem compromisso.
             </motion.p>
 
             <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
