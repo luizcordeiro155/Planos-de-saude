@@ -9,7 +9,7 @@ import {
 import { Card } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
-const WHATSAPP_BASE = "https://wa.me/5531936598​75";
+const WHATSAPP_BASE = "https://wa.me/553193659875";
 const WHATSAPP_URL = `${WHATSAPP_BASE}?text=Olá!%20Gostaria%20de%20conhecer%20os%20planos%20de%20saúde.`;
 
 function buildWhatsAppUrl(nome: string, cidade: string, tipo: string, vidas: string): string {
@@ -90,6 +90,7 @@ export default function Home() {
     { href: "#beneficios", label: "Diferenciais" },
     { href: "#como-funciona", label: "Como Funciona" },
     { href: "#depoimentos", label: "Depoimentos" },
+    { href: "#cotacao", label: "Cotação Rápida", highlight: true },
   ];
 
   return (
@@ -113,9 +114,16 @@ export default function Home() {
 
           <nav className="hidden md:flex items-center gap-7">
             {navLinks.map(link => (
-              <a key={link.href} href={link.href} className="text-sm font-medium text-foreground/70 hover:text-primary transition-colors">
-                {link.label}
-              </a>
+              link.highlight ? (
+                <a key={link.href} href={link.href} className="text-sm font-semibold text-secondary border border-secondary/40 px-3 py-1.5 rounded-full hover:bg-secondary/10 transition-all flex items-center gap-1.5">
+                  <Send className="h-3 w-3" />
+                  {link.label}
+                </a>
+              ) : (
+                <a key={link.href} href={link.href} className="text-sm font-medium text-foreground/70 hover:text-primary transition-colors">
+                  {link.label}
+                </a>
+              )
             ))}
             <a
               href={WHATSAPP_URL}
@@ -146,7 +154,13 @@ export default function Home() {
           >
             <div className="flex flex-col gap-5 text-lg font-medium">
               {navLinks.map(link => (
-                <a key={link.href} href={link.href} className="py-2 border-b border-border text-foreground/80 hover:text-primary transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className={`py-2 border-b border-border transition-colors flex items-center gap-2 ${link.highlight ? 'text-secondary font-semibold' : 'text-foreground/80 hover:text-primary'}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.highlight && <Send className="h-4 w-4" />}
                   {link.label}
                 </a>
               ))}
