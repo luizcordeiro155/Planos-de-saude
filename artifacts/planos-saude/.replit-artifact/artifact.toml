@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Planos de Saúde"
+version = "1.0.0"
+id = "artifacts/planos-saude"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18367
+
+[services.development]
+run = "pnpm --filter @workspace/planos-saude run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/planos-saude", "run", "build" ]
+publicDir = "artifacts/planos-saude/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18367"
+BASE_PATH = "/"
