@@ -1,0 +1,20 @@
+{
+  "buildCommand": "pnpm --filter planos-site build",
+  "outputDirectory": "artifacts/site/dist",
+  "framework": "vite",
+  "functions": {
+    "api/site-content.ts": {
+      "runtime": "nodejs22.x"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
