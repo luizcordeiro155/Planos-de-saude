@@ -344,7 +344,7 @@ export default function Home() {
                   Receba sua cotação em minutos pelo WhatsApp.
                 </h2>
                 <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
-                  Preencha os campos ao lado e clique no botão. Sua mensagem chegará já formatada para o nosso especialista — sem precisar digitar nada.
+                  Preencha os campos ao lado e clique no botão. Sua mensagem chegará já formatada para o nosso especialista sem precisar digitar nada.
                 </p>
                 <ul className="space-y-3">
                   {[
@@ -384,7 +384,7 @@ export default function Home() {
                     {!formSubmitted ? (
                       <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                         <h3 className="text-2xl font-display font-bold mb-2">Solicite sua cotação</h3>
-                        <p className="text-muted-foreground text-sm mb-7">Preencha e envie — simples assim.</p>
+                        <p className="text-muted-foreground text-sm mb-7">Preencha e envie simples assim.</p>
                         <div className="space-y-5">
                           <div>
                             <label className="block text-sm font-semibold text-foreground mb-2" htmlFor="form-nome">Seu nome completo</label>
@@ -535,7 +535,7 @@ export default function Home() {
               Uma solução para cada momento de vida
             </h2>
             <p className="text-lg text-muted-foreground">
-              Seja para você, sua família ou sua empresa — encontramos as melhores opções com as melhores condições do mercado. Consulte-nos gratuitamente pelo WhatsApp.
+              Seja para você, sua família ou sua empresa encontramos as melhores opções com as melhores condições do mercado. Consulte-nos gratuitamente pelo WhatsApp.
             </p>
           </motion.div>
 
@@ -728,7 +728,7 @@ export default function Home() {
             >
               <p className="text-sm font-bold uppercase tracking-widest text-primary mb-4">Por que a Rota Seguros</p>
               <h2 className="text-4xl md:text-5xl font-display font-extrabold mb-6 leading-tight">
-                Mais do que um corretor — um parceiro de saúde.
+                Mais do que um corretor um parceiro de saúde.
               </h2>
               <p className="text-lg text-muted-foreground mb-10 leading-relaxed">
                 Não somos representantes de uma única operadora. Trabalhamos com as principais do mercado e buscamos, de forma independente, o plano que realmente faz sentido para o seu perfil e orçamento.
