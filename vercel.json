@@ -1,6 +1,6 @@
 {
   "installCommand": "pnpm install --no-frozen-lockfile",
-  "buildCommand": "pnpm --filter planos-site build && rm -rf dist && mkdir -p dist && cp -r artifacts/site/dist/* dist/",
+  "buildCommand": "pnpm --filter planos-site build",
   "outputDirectory": "dist",
   "framework": "vite",
   "functions": {
