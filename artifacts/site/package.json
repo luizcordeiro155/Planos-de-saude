@@ -1,0 +1,22 @@
+{
+  "name": "planos-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@vercel/kv": "^3.0.0",
+    "@vercel/node": "^5.5.10",
+    "@vitejs/plugin-react": "catalog:",
+    "vite": "catalog:",
+    "typescript": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "lucide-react": "catalog:"
+  },
+  "devDependencies": {}
+}
