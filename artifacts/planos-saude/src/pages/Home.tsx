@@ -322,233 +322,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── QUOTE FORM ── */}
-      <section id="cotacao" className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-background to-secondary/5 pointer-events-none" />
-        <motion.div
-          animate={{ scale: [1, 1.15, 1], opacity: [0.15, 0.3, 0.15] }}
-          transition={{ duration: 10, repeat: Infinity }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-primary/10 rounded-full blur-[100px] pointer-events-none"
-        />
-
-        <div className="container mx-auto px-4 md:px-6 relative z-10">
-          <div className="max-w-5xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-
-              {/* Left: Text */}
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7 }}
-              >
-                <p className="text-sm font-bold uppercase tracking-widest text-primary mb-4">Cotação Gratuita</p>
-                <h2 className="text-4xl md:text-5xl font-display font-extrabold mb-6 leading-tight">
-                  Receba sua cotação em minutos pelo WhatsApp.
-                </h2>
-                <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
-                  Preencha os campos ao lado e clique no botão. Sua mensagem chegará já formatada para o nosso especialista — sem precisar digitar nada.
-                </p>
-                <ul className="space-y-3">
-                  {[
-                    "Consultoria 100% gratuita e sem compromisso",
-                    "Respondemos em até 5 minutos em horário comercial",
-                    "Comparamos todas as operadoras para você",
-                    "Sem burocracia, tudo pelo WhatsApp",
-                  ].map((item, i) => (
-                    <motion.li
-                      key={i}
-                      initial={{ opacity: 0, x: -15 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.1 }}
-                      className="flex items-center gap-3 text-sm text-muted-foreground"
-                    >
-                      <CheckCircle2 className="h-4 w-4 text-secondary shrink-0" />
-                      {item}
-                    </motion.li>
-                  ))}
-                </ul>
-              </motion.div>
-
-              {/* Right: Form Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: 0.1 }}
-              >
-                <Card className="p-8 border border-border shadow-xl bg-card relative overflow-hidden">
-                  <motion.div
-                    animate={{ x: [0, 60, 0], y: [0, -30, 0], opacity: [0.4, 0.7, 0.4] }}
-                    transition={{ duration: 12, repeat: Infinity }}
-                    className="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl pointer-events-none"
-                  />
-
-                  <AnimatePresence mode="wait">
-                    {!formSubmitted ? (
-                      <motion.div
-                        key="form"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                      >
-                        <h3 className="text-2xl font-display font-bold mb-2">Solicite sua cotação</h3>
-                        <p className="text-muted-foreground text-sm mb-7">Preencha e envie — simples assim.</p>
-
-                        <div className="space-y-5">
-                          {/* Nome */}
-                          <div>
-                            <label className="block text-sm font-semibold text-foreground mb-2" htmlFor="form-nome">
-                              Seu nome completo
-                            </label>
-                            <input
-                              id="form-nome"
-                              data-testid="input-nome"
-                              type="text"
-                              placeholder="Ex: João da Silva"
-                              value={nome}
-                              onChange={e => setNome(e.target.value)}
-                              className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all text-sm"
-                            />
-                          </div>
-
-                          {/* Cidade */}
-                          <div>
-                            <label className="block text-sm font-semibold text-foreground mb-2" htmlFor="form-cidade">
-                              Cidade
-                            </label>
-                            <input
-                              id="form-cidade"
-                              data-testid="input-cidade"
-                              type="text"
-                              placeholder="Ex: Belo Horizonte, MG"
-                              value={cidade}
-                              onChange={e => setCidade(e.target.value)}
-                              className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all text-sm"
-                            />
-                          </div>
-
-                          {/* Tipo de plano */}
-                          <div>
-                            <label className="block text-sm font-semibold text-foreground mb-2">
-                              Tipo de plano
-                            </label>
-                            <div className="grid grid-cols-3 gap-2">
-                              {[
-                                { value: "individual", label: "Individual", icon: UserCheck },
-                                { value: "familiar", label: "Familiar", icon: Baby },
-                                { value: "empresarial", label: "Empresarial", icon: Briefcase },
-                              ].map(opt => (
-                                <button
-                                  key={opt.value}
-                                  type="button"
-                                  data-testid={`button-tipo-${opt.value}`}
-                                  onClick={() => { setTipo(opt.value); if (opt.value === "individual") setVidas(""); }}
-                                  className={`flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl border text-xs font-semibold transition-all ${tipo === opt.value ? 'border-primary bg-primary/10 text-primary' : 'border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground'}`}
-                                >
-                                  <opt.icon className="h-5 w-5" />
-                                  {opt.label}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* Quantidade de vidas — só aparece se não for individual */}
-                          <AnimatePresence>
-                            {tipo && tipo !== "individual" && (
-                              <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: "auto" }}
-                                exit={{ opacity: 0, height: 0 }}
-                                className="overflow-hidden"
-                              >
-                                <label className="block text-sm font-semibold text-foreground mb-2" htmlFor="form-vidas">
-                                  Quantidade de vidas
-                                </label>
-                                <select
-                                  id="form-vidas"
-                                  data-testid="select-vidas"
-                                  value={vidas}
-                                  onChange={e => setVidas(e.target.value)}
-                                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all text-sm appearance-none cursor-pointer"
-                                >
-                                  <option value="">Selecione...</option>
-                                  {tipo === "familiar" && (
-                                    <>
-                                      <option value="2 vidas (titular + 1 dependente)">2 vidas (titular + 1)</option>
-                                      <option value="3 vidas (titular + 2 dependentes)">3 vidas (titular + 2)</option>
-                                      <option value="4 vidas (titular + 3 dependentes)">4 vidas (titular + 3)</option>
-                                      <option value="5 ou mais vidas">5 ou mais vidas</option>
-                                    </>
-                                  )}
-                                  {tipo === "empresarial" && (
-                                    <>
-                                      <option value="2 a 5 vidas">2 a 5 vidas</option>
-                                      <option value="6 a 10 vidas">6 a 10 vidas</option>
-                                      <option value="11 a 29 vidas">11 a 29 vidas</option>
-                                      <option value="30 a 99 vidas">30 a 99 vidas</option>
-                                      <option value="100 ou mais vidas">100 ou mais vidas</option>
-                                    </>
-                                  )}
-                                </select>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-
-                          {/* Submit */}
-                          <a
-                            href={buildWhatsAppUrl(nome, cidade, tipo, vidas)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            data-testid="button-form-submit"
-                            onClick={() => { if (nome || cidade || tipo) setFormSubmitted(true); }}
-                            className={`w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-base transition-all ${nome && tipo ? 'bg-secondary text-white hover:bg-secondary/90 hover:shadow-[0_0_20px_rgba(34,197,94,0.4)] hover:-translate-y-0.5' : 'bg-secondary/60 text-white cursor-pointer'}`}
-                          >
-                            <Send className="h-4 w-4" />
-                            Enviar Cotação pelo WhatsApp
-                          </a>
-
-                          <p className="text-xs text-muted-foreground text-center">
-                            Ao clicar, você será direcionado ao WhatsApp com sua mensagem já preenchida.
-                          </p>
-                        </div>
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="success"
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="py-8 text-center flex flex-col items-center gap-4"
-                      >
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{ type: "spring", stiffness: 200, damping: 15 }}
-                          className="w-20 h-20 rounded-full bg-secondary/20 flex items-center justify-center"
-                        >
-                          <CheckCircle2 className="h-10 w-10 text-secondary" />
-                        </motion.div>
-                        <h3 className="text-2xl font-display font-bold">Mensagem enviada!</h3>
-                        <p className="text-muted-foreground text-sm max-w-xs">
-                          Você foi direcionado ao WhatsApp. Nossa equipe responderá em breve. Obrigado, <strong>{nome || "cliente"}</strong>!
-                        </p>
-                        <button
-                          onClick={() => { setFormSubmitted(false); setNome(''); setCidade(''); setTipo(''); setVidas(''); }}
-                          className="mt-2 text-sm text-primary font-semibold hover:underline"
-                        >
-                          Fazer nova cotação
-                        </button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </Card>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ── PLANS ── */}
       <section id="planos" className="py-28 relative">
         <div className="absolute inset-0 bg-gradient-to-b from-accent/20 to-transparent pointer-events-none" />
@@ -954,6 +727,228 @@ export default function Home() {
                 </Card>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── QUOTE FORM ── */}
+      <section id="cotacao" className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-background to-secondary/5 pointer-events-none" />
+        <motion.div
+          animate={{ scale: [1, 1.15, 1], opacity: [0.15, 0.3, 0.15] }}
+          transition={{ duration: 10, repeat: Infinity }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-primary/10 rounded-full blur-[100px] pointer-events-none"
+        />
+
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+
+              {/* Left: Text */}
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7 }}
+              >
+                <p className="text-sm font-bold uppercase tracking-widest text-primary mb-4">Cotação Gratuita</p>
+                <h2 className="text-4xl md:text-5xl font-display font-extrabold mb-6 leading-tight">
+                  Receba sua cotação em minutos pelo WhatsApp.
+                </h2>
+                <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
+                  Preencha os campos ao lado e clique no botão. Sua mensagem chegará já formatada para o nosso especialista — sem precisar digitar nada.
+                </p>
+                <ul className="space-y-3">
+                  {[
+                    "Consultoria 100% gratuita e sem compromisso",
+                    "Respondemos em até 5 minutos em horário comercial",
+                    "Comparamos todas as operadoras para você",
+                    "Sem burocracia, tudo pelo WhatsApp",
+                  ].map((item, i) => (
+                    <motion.li
+                      key={i}
+                      initial={{ opacity: 0, x: -15 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.1 }}
+                      className="flex items-center gap-3 text-sm text-muted-foreground"
+                    >
+                      <CheckCircle2 className="h-4 w-4 text-secondary shrink-0" />
+                      {item}
+                    </motion.li>
+                  ))}
+                </ul>
+              </motion.div>
+
+              {/* Right: Form Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.1 }}
+              >
+                <Card className="p-8 border border-border shadow-xl bg-card relative overflow-hidden">
+                  <motion.div
+                    animate={{ x: [0, 60, 0], y: [0, -30, 0], opacity: [0.4, 0.7, 0.4] }}
+                    transition={{ duration: 12, repeat: Infinity }}
+                    className="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl pointer-events-none"
+                  />
+
+                  <AnimatePresence mode="wait">
+                    {!formSubmitted ? (
+                      <motion.div
+                        key="form"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                      >
+                        <h3 className="text-2xl font-display font-bold mb-2">Solicite sua cotação</h3>
+                        <p className="text-muted-foreground text-sm mb-7">Preencha e envie — simples assim.</p>
+
+                        <div className="space-y-5">
+                          <div>
+                            <label className="block text-sm font-semibold text-foreground mb-2" htmlFor="form-nome">
+                              Seu nome completo
+                            </label>
+                            <input
+                              id="form-nome"
+                              data-testid="input-nome"
+                              type="text"
+                              placeholder="Ex: João da Silva"
+                              value={nome}
+                              onChange={e => setNome(e.target.value)}
+                              className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all text-sm"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-semibold text-foreground mb-2" htmlFor="form-cidade">
+                              Cidade
+                            </label>
+                            <input
+                              id="form-cidade"
+                              data-testid="input-cidade"
+                              type="text"
+                              placeholder="Ex: Belo Horizonte, MG"
+                              value={cidade}
+                              onChange={e => setCidade(e.target.value)}
+                              className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all text-sm"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-semibold text-foreground mb-2">
+                              Tipo de plano
+                            </label>
+                            <div className="grid grid-cols-3 gap-2">
+                              {[
+                                { value: "individual", label: "Individual", icon: UserCheck },
+                                { value: "familiar", label: "Familiar", icon: Baby },
+                                { value: "empresarial", label: "Empresarial", icon: Briefcase },
+                              ].map(opt => (
+                                <button
+                                  key={opt.value}
+                                  type="button"
+                                  data-testid={`button-tipo-${opt.value}`}
+                                  onClick={() => { setTipo(opt.value); if (opt.value === "individual") setVidas(""); }}
+                                  className={`flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl border text-xs font-semibold transition-all ${tipo === opt.value ? 'border-primary bg-primary/10 text-primary' : 'border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground'}`}
+                                >
+                                  <opt.icon className="h-5 w-5" />
+                                  {opt.label}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          <AnimatePresence>
+                            {tipo && tipo !== "individual" && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: "auto" }}
+                                exit={{ opacity: 0, height: 0 }}
+                                className="overflow-hidden"
+                              >
+                                <label className="block text-sm font-semibold text-foreground mb-2" htmlFor="form-vidas">
+                                  Quantidade de vidas
+                                </label>
+                                <select
+                                  id="form-vidas"
+                                  data-testid="select-vidas"
+                                  value={vidas}
+                                  onChange={e => setVidas(e.target.value)}
+                                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all text-sm appearance-none cursor-pointer"
+                                >
+                                  <option value="">Selecione...</option>
+                                  {tipo === "familiar" && (
+                                    <>
+                                      <option value="2 vidas (titular + 1 dependente)">2 vidas (titular + 1)</option>
+                                      <option value="3 vidas (titular + 2 dependentes)">3 vidas (titular + 2)</option>
+                                      <option value="4 vidas (titular + 3 dependentes)">4 vidas (titular + 3)</option>
+                                      <option value="5 ou mais vidas">5 ou mais vidas</option>
+                                    </>
+                                  )}
+                                  {tipo === "empresarial" && (
+                                    <>
+                                      <option value="2 a 5 vidas">2 a 5 vidas</option>
+                                      <option value="6 a 10 vidas">6 a 10 vidas</option>
+                                      <option value="11 a 29 vidas">11 a 29 vidas</option>
+                                      <option value="30 a 99 vidas">30 a 99 vidas</option>
+                                      <option value="100 ou mais vidas">100 ou mais vidas</option>
+                                    </>
+                                  )}
+                                </select>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+
+                          <a
+                            href={buildWhatsAppUrl(nome, cidade, tipo, vidas)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            data-testid="button-form-submit"
+                            onClick={() => { if (nome || cidade || tipo) setFormSubmitted(true); }}
+                            className={`w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-base transition-all ${nome && tipo ? 'bg-secondary text-white hover:bg-secondary/90 hover:shadow-[0_0_20px_rgba(34,197,94,0.4)] hover:-translate-y-0.5' : 'bg-secondary/60 text-white cursor-pointer'}`}
+                          >
+                            <Send className="h-4 w-4" />
+                            Enviar Cotação pelo WhatsApp
+                          </a>
+
+                          <p className="text-xs text-muted-foreground text-center">
+                            Ao clicar, você será direcionado ao WhatsApp com sua mensagem já preenchida.
+                          </p>
+                        </div>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="success"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="py-8 text-center flex flex-col items-center gap-4"
+                      >
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                          className="w-20 h-20 rounded-full bg-secondary/20 flex items-center justify-center"
+                        >
+                          <CheckCircle2 className="h-10 w-10 text-secondary" />
+                        </motion.div>
+                        <h3 className="text-2xl font-display font-bold">Mensagem enviada!</h3>
+                        <p className="text-muted-foreground text-sm max-w-xs">
+                          Você foi direcionado ao WhatsApp. Nossa equipe responderá em breve. Obrigado, <strong>{nome || "cliente"}</strong>!
+                        </p>
+                        <button
+                          onClick={() => { setFormSubmitted(false); setNome(''); setCidade(''); setTipo(''); setVidas(''); }}
+                          className="mt-2 text-sm text-primary font-semibold hover:underline"
+                        >
+                          Fazer nova cotação
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </Card>
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>
