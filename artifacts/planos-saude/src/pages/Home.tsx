@@ -209,7 +209,7 @@ export default function Home() {
           >
             <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-semibold text-sm mb-8 border border-primary/20">
               <Shield className="h-4 w-4" />
-              Corretora de Saúde Especializada — Belo Horizonte, MG
+              Corretora de Saúde Especializada - Belo Horizonte, MG
             </motion.div>
 
             <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl font-display font-extrabold leading-[1.05] mb-6 text-foreground">
