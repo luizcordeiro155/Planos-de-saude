@@ -13,7 +13,7 @@
     "@vercel/node": "^5.5.10",
     "@vitejs/plugin-react": "catalog:",
     "vite": "catalog:",
-    "typescript": "catalog:",
+    "typescript": "~5.9.3",
     "react": "catalog:",
     "react-dom": "catalog:",
     "lucide-react": "catalog:"
