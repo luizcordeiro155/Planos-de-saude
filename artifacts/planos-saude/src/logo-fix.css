@@ -1,0 +1,24 @@
+/* Remove o fundo azul quando uma logo personalizada for enviada pelo admin.
+   Mantem o circulo apenas quando o site usa o icone padrao. */
+.group > .rounded-full.bg-primary:has(img),
+.group > .rounded-full[class*="bg-primary"]:has(img) {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+}
+
+.group > .rounded-full.bg-primary:has(img) img,
+.group > .rounded-full[class*="bg-primary"]:has(img) img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  display: block;
+}
+
+header .group > .rounded-full:has(img),
+footer .group > .rounded-full:has(img) {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
