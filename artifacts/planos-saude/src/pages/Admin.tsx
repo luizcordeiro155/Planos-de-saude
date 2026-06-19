@@ -38,15 +38,15 @@ const sections: Section[] = [
   { id: 'faq', label: 'FAQ', path: 'faq' },
   { id: 'finalCta', label: 'CTA final', path: 'finalCta' },
   { id: 'footer', label: 'Rodapé', path: 'footer' },
-  { id: 'json', label: 'JSON completo', path: '' },
+  { id: 'json', label: 'JSON completo', path: '' }
 ];
 
 const labels: Record<string, string> = {
   brand: 'Identidade', name: 'Nome', logoDataUrl: 'Logo', whatsapp: 'WhatsApp com DDI e DDD', phoneDisplay: 'Telefone exibido', email: 'E-mail', city: 'Cidade', coverage: 'Área de atendimento',
-  seo: 'SEO e compartilhamento', browserTitle: 'Nome na aba do navegador', faviconDataUrl: 'Ícone da aba por upload', faviconUrl: 'Ícone da aba por URL', shareTitle: 'Título ao compartilhar o link', shareDescription: 'Descrição ao compartilhar o link', shareImageDataUrl: 'Imagem de compartilhamento por upload', shareImageUrl: 'Imagem de compartilhamento por URL', shareImageAlt: 'Texto da imagem compartilhada', siteUrl: 'Link oficial do site', themeColor: 'Cor do navegador',
+  seo: 'SEO e compartilhamento', browserTitle: 'Nome na aba do navegador', description: 'Descrição', faviconDataUrl: 'Ícone por upload', faviconUrl: 'Ícone por URL', shareTitle: 'Título ao compartilhar', shareDescription: 'Descrição ao compartilhar', shareImageDataUrl: 'Imagem de compartilhamento por upload', shareImageUrl: 'Imagem de compartilhamento por URL', shareImageAlt: 'Texto da imagem', siteUrl: 'Link oficial do site', themeColor: 'Cor do navegador',
   photos: 'Fotos do site', hero: 'Foto da seção principal', quote: 'Foto da cotação', differentials: 'Foto dos diferenciais', finalCta: 'Foto da chamada final', imageDataUrl: 'Imagem',
   nav: 'Menu', badge: 'Selo', titleStart: 'Título início', titleHighlight: 'Título destaque', titleEnd: 'Título final', subtitle: 'Subtítulo', supportText: 'Texto de apoio', primaryButton: 'Botão principal', secondaryButton: 'Botão secundário',
-  metrics: 'Métricas', value: 'Valor', suffix: 'Sufixo', label: 'Rótulo', operators: 'Operadoras', items: 'Itens', title: 'Título', description: 'Descrição', imageUrl: 'Imagem', photoUrl: 'Foto',
+  metrics: 'Métricas', value: 'Valor', suffix: 'Sufixo', label: 'Rótulo', operators: 'Operadoras', items: 'Itens', title: 'Título', imageUrl: 'Imagem', photoUrl: 'Foto',
   kicker: 'Chamada pequena', benefits: 'Benefícios', formTitle: 'Título do formulário', formSubtitle: 'Subtítulo do formulário', nameLabel: 'Campo nome', namePlaceholder: 'Placeholder nome', cityLabel: 'Campo cidade', cityPlaceholder: 'Placeholder cidade', typeLabel: 'Campo tipo', types: 'Tipos de plano', button: 'Botão', note: 'Observação',
   plans: 'Planos', features: 'Características', coverages: 'Coberturas', stats: 'Estatísticas', ratingTitle: 'Nota', ratingSubtitle: 'Texto da nota', process: 'Como funciona', steps: 'Passos', number: 'Número', testimonials: 'Depoimentos', role: 'Cargo/cidade', text: 'Comentário', stars: 'Estrelas', faq: 'FAQ', question: 'Pergunta', answer: 'Resposta', footerText: 'Texto final', footer: 'Rodapé', regulatoryLabel: 'Texto regulatório', regulatoryValue: 'Valor regulatório', navigationTitle: 'Título navegação', contactTitle: 'Título contato', copyright: 'Copyright', bottomText: 'Texto final do rodapé'
 };
@@ -54,12 +54,51 @@ const labels: Record<string, string> = {
 function normalizeContent(data: any) {
   return { ...data, seo: { ...defaultSeo, ...(data?.seo || {}) } };
 }
-function getAtPath(obj: any, path: string) { return path ? path.split('.').reduce((acc, key) => acc?.[key], obj) : obj; }
-function setAtPath(obj: any, path: string, value: JsonValue) { if (!path) return value; const parts = path.split('.'); const copy = Array.isArray(obj) ? [...obj] : { ...obj }; let cursor: any = copy; parts.slice(0, -1).forEach((part) => { cursor[part] = Array.isArray(cursor[part]) ? [...cursor[part]] : { ...cursor[part] }; cursor = cursor[part]; }); cursor[parts[parts.length - 1]] = value; return copy; }
-function labelFor(key: string) { return labels[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, (char) => char.toUpperCase()); }
-function isLongText(value: string) { return value.length > 70 || value.includes('\n') || value.includes('.') || value.includes(','); }
-function isImagePath(path: string) { const lower = path.toLowerCase(); return lower.includes('logodataurl') || lower.includes('imagedataurl') || lower.includes('imageurl') || lower.includes('photourl') || lower.includes('favicon') || lower.endsWith('.image') || lower.endsWith('.photo'); }
-function blankClone(value: JsonValue): JsonValue { if (Array.isArray(value)) return []; if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).map(([key, child]) => [key, key.toLowerCase().includes('image') || key.toLowerCase().includes('logo') || key.toLowerCase().includes('favicon') ? '' : blankClone(child)])); if (typeof value === 'number') return 0; if (typeof value === 'boolean') return false; return ''; }
+
+function getAtPath(obj: any, path: string) {
+  return path ? path.split('.').reduce((acc, key) => acc?.[key], obj) : obj;
+}
+
+function setAtPath(obj: any, path: string, value: JsonValue) {
+  if (!path) return value;
+  const parts = path.split('.');
+  const copy = Array.isArray(obj) ? [...obj] : { ...obj };
+  let cursor: any = copy;
+  parts.slice(0, -1).forEach((part) => {
+    cursor[part] = Array.isArray(cursor[part]) ? [...cursor[part]] : { ...cursor[part] };
+    cursor = cursor[part];
+  });
+  cursor[parts[parts.length - 1]] = value;
+  return copy;
+}
+
+function labelFor(key: string) {
+  return labels[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, (char) => char.toUpperCase());
+}
+
+function isLongText(value: string) {
+  return value.length > 70 || value.includes('\n') || value.includes('.') || value.includes(',');
+}
+
+function isImagePath(path: string) {
+  const lower = path.toLowerCase();
+  return lower.includes('logodataurl') || lower.includes('imagedataurl') || lower.includes('imageurl') || lower.includes('photourl') || lower.includes('favicon') || lower.endsWith('.image') || lower.endsWith('.photo');
+}
+
+function blankClone(value: JsonValue): JsonValue {
+  if (Array.isArray(value)) return [];
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(Object.entries(value).map(([key, child]) => [key, key.toLowerCase().includes('image') || key.toLowerCase().includes('logo') || key.toLowerCase().includes('favicon') ? '' : blankClone(child)]));
+  }
+  if (typeof value === 'number') return 0;
+  if (typeof value === 'boolean') return false;
+  return '';
+}
+
+function formatBytes(bytes: number) {
+  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
+  return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+}
 
 export default function Admin() {
   const [password, setPassword] = useState(() => sessionStorage.getItem('admin-password') || '');
@@ -82,7 +121,10 @@ export default function Admin() {
       sessionStorage.setItem('admin-auth', 'true');
       setAuthenticated(true);
       await loadContent(password);
-    } catch (error) { setStatus('error'); setMessage(error instanceof Error ? error.message : 'Erro ao autenticar.'); }
+    } catch (error) {
+      setStatus('error');
+      setMessage(error instanceof Error ? error.message : 'Erro ao autenticar.');
+    }
   }
 
   async function loadContent(activePassword = password) {
@@ -97,7 +139,10 @@ export default function Admin() {
       setRawJson(JSON.stringify(parsed, null, 2));
       setStatus('ready');
       setMessage('Conteúdo atual carregado do GitHub.');
-    } catch (error) { setStatus('error'); setMessage(error instanceof Error ? error.message : 'Erro ao carregar conteúdo.'); }
+    } catch (error) {
+      setStatus('error');
+      setMessage(error instanceof Error ? error.message : 'Erro ao carregar conteúdo.');
+    }
   }
 
   function updateValue(path: string, value: JsonValue) {
@@ -117,20 +162,28 @@ export default function Admin() {
       setContent(nextContent);
       setRawJson(JSON.stringify(nextContent, null, 2));
       setStatus('ready');
-      setMessage(`Salvo com sucesso. Commit: ${data.commit || 'criado'}. A Vercel deve iniciar novo deploy e atualizar título, ícone e prévia do WhatsApp.`);
-    } catch (error) { setStatus('error'); setMessage(error instanceof Error ? error.message : 'Erro ao salvar. Verifique o JSON.'); }
+      setMessage(`Salvo com sucesso. Commit: ${data.commit || 'criado'}. A Vercel deve iniciar novo deploy.`);
+    } catch (error) {
+      setStatus('error');
+      setMessage(error instanceof Error ? error.message : 'Erro ao salvar. Verifique o JSON.');
+    }
   }
 
   const section = sections.find((item) => item.id === activeSection) || sections[0];
   const sectionData = content ? getAtPath(content, section.path) : null;
 
-  if (!authenticated) return <main className="min-h-screen bg-slate-950 text-white flex items-center justify-center px-4"><form onSubmit={login} className="w-full max-w-md rounded-3xl bg-white/10 border border-white/10 p-8 shadow-2xl"><div className="w-14 h-14 rounded-2xl bg-emerald-500 flex items-center justify-center mb-6"><Lock className="h-7 w-7" /></div><h1 className="text-3xl font-bold mb-2">Admin do site</h1><p className="text-slate-300 mb-6">Edite o site, SEO, ícone da aba e imagem de compartilhamento.</p><label className="block text-sm font-semibold mb-2">Senha secreta</label><input type="password" value={password} onChange={(event) => setPassword(event.target.value)} className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 outline-none focus:border-emerald-400" /><button type="submit" className="mt-5 w-full rounded-xl bg-emerald-500 py-3 font-bold hover:bg-emerald-400">Entrar</button>{message && <p className="mt-4 text-sm text-amber-200">{message}</p>}</form></main>;
+  if (!authenticated) {
+    return <main className="min-h-screen bg-slate-950 text-white flex items-center justify-center px-4"><form onSubmit={login} className="w-full max-w-md rounded-3xl bg-white/10 border border-white/10 p-8 shadow-2xl"><div className="w-14 h-14 rounded-2xl bg-emerald-500 flex items-center justify-center mb-6"><Lock className="h-7 w-7" /></div><h1 className="text-3xl font-bold mb-2">Admin do site</h1><p className="text-slate-300 mb-6">Edite o site, SEO, ícone da aba e imagens.</p><label className="block text-sm font-semibold mb-2">Senha secreta</label><input type="password" value={password} onChange={(event) => setPassword(event.target.value)} className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 outline-none focus:border-emerald-400" /><button type="submit" className="mt-5 w-full rounded-xl bg-emerald-500 py-3 font-bold hover:bg-emerald-400">Entrar</button>{message && <p className="mt-4 text-sm text-amber-200">{message}</p>}</form></main>;
+  }
 
   return <main className="min-h-screen bg-slate-100 text-slate-950"><header className="bg-white border-b border-slate-200 sticky top-0 z-20"><div className="max-w-7xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-4"><div><p className="text-sm text-emerald-700 font-bold flex items-center gap-2"><ShieldCheck className="h-4 w-4" /> Painel protegido</p><h1 className="text-2xl font-black">Editar site completo</h1></div><div className="flex gap-2"><a href="/" target="_blank" rel="noreferrer" className="rounded-xl border border-slate-300 px-4 py-2 font-semibold flex items-center gap-2"><Home className="h-4 w-4" /> Ver site</a><button onClick={() => loadContent()} className="rounded-xl border border-slate-300 px-4 py-2 font-semibold">Recarregar</button><button onClick={save} disabled={!content || status === 'saving'} className="rounded-xl bg-emerald-600 text-white px-4 py-2 font-bold flex items-center gap-2 disabled:opacity-50"><Save className="h-4 w-4" /> Salvar e publicar</button></div></div></header><section className="max-w-7xl mx-auto px-4 py-6">{message && <div className="mb-5 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 flex gap-2"><AlertCircle className="h-5 w-5 shrink-0" /><span>{message}</span></div>}<div className="mb-5 flex gap-2 overflow-x-auto pb-2">{sections.map((tab) => <button key={tab.id} onClick={() => setActiveSection(tab.id)} className={`whitespace-nowrap rounded-xl px-4 py-2 font-bold border ${activeSection === tab.id ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white border-slate-200 text-slate-700'}`}>{tab.label}</button>)}</div>{!content ? <div className="rounded-3xl bg-white p-8 border">Carregando...</div> : <div className="grid lg:grid-cols-[1fr_520px] gap-6"><div className="rounded-3xl bg-white border border-slate-200 p-6 shadow-sm"><h2 className="text-xl font-bold mb-2">Editar {section.label}</h2><p className="text-sm text-slate-500 mb-5">{activeSection === 'seo' ? 'Altere aqui o nome da aba, ícone do navegador e a prévia enviada no WhatsApp, Instagram e outros lugares.' : 'Tudo que aparece aqui altera o site e a prévia muda enquanto você digita.'}</p>{activeSection === 'json' ? <textarea value={rawJson} onChange={(event) => setRawJson(event.target.value)} className="w-full min-h-[720px] rounded-xl border p-4 font-mono text-xs" /> : <JsonEditor value={sectionData} path={section.path} onChange={updateValue} />}</div><aside className="rounded-3xl bg-white border border-slate-200 p-6 shadow-sm h-fit sticky top-28"><h2 className="text-xl font-bold mb-4 flex gap-2"><Eye className="h-5 w-5" /> Prévia da seção</h2><div className="rounded-2xl border bg-slate-50 p-5 max-h-[760px] overflow-auto"><Preview content={content} section={activeSection} /></div></aside></div>}</section></main>;
 }
 
 function JsonEditor({ value, path, onChange }: { value: JsonValue; path: string; onChange: (path: string, value: JsonValue) => void }) {
-  if (Array.isArray(value)) { const template = value[0] ?? ''; return <div className="space-y-5"><div className="flex justify-end"><button type="button" onClick={() => onChange(path, [...value, blankClone(template)])} className="rounded-xl bg-emerald-600 text-white px-4 py-2 text-sm font-bold">Adicionar item</button></div>{value.map((item, index) => <div key={index} className="rounded-2xl border border-slate-200 bg-slate-50 p-4"><div className="mb-3 flex items-center justify-between gap-3"><span className="text-sm font-black text-emerald-700">Item {index + 1}</span><button type="button" onClick={() => onChange(path, value.filter((_, itemIndex) => itemIndex !== index))} className="rounded-lg border px-3 py-1 text-xs font-bold text-red-600">Remover</button></div><JsonEditor value={item} path={path ? `${path}.${index}` : String(index)} onChange={onChange} /></div>)}</div>; }
+  if (Array.isArray(value)) {
+    const template = value[0] ?? '';
+    return <div className="space-y-5"><div className="flex justify-end"><button type="button" onClick={() => onChange(path, [...value, blankClone(template)])} className="rounded-xl bg-emerald-600 text-white px-4 py-2 text-sm font-bold">Adicionar item</button></div>{value.map((item, index) => <div key={index} className="rounded-2xl border border-slate-200 bg-slate-50 p-4"><div className="mb-3 flex items-center justify-between gap-3"><span className="text-sm font-black text-emerald-700">Item {index + 1}</span><button type="button" onClick={() => onChange(path, value.filter((_, itemIndex) => itemIndex !== index))} className="rounded-lg border px-3 py-1 text-xs font-bold text-red-600">Remover</button></div><JsonEditor value={item} path={path ? `${path}.${index}` : String(index)} onChange={onChange} /></div>)}</div>;
+  }
   if (value && typeof value === 'object') return <div className="space-y-4">{Object.entries(value).map(([key, child]) => <div key={key}><div className="mb-2 text-sm font-bold text-slate-700">{labelFor(key)}</div><JsonEditor value={child} path={path ? `${path}.${key}` : key} onChange={onChange} /></div>)}</div>;
   if (typeof value === 'boolean') return <select value={value ? 'true' : 'false'} onChange={(event) => onChange(path, event.target.value === 'true')} className="w-full rounded-xl border bg-white p-3"><option value="true">Sim</option><option value="false">Não</option></select>;
   if (typeof value === 'number') return <input type="number" value={value} onChange={(event) => onChange(path, Number(event.target.value))} className="w-full rounded-xl border bg-white p-3" />;
@@ -141,11 +194,23 @@ function JsonEditor({ value, path, onChange }: { value: JsonValue; path: string;
 }
 
 function ImageInput({ value, path, onChange }: { value: string; path: string; onChange: (path: string, value: JsonValue) => void }) {
-  function upload(event: React.ChangeEvent<HTMLInputElement>) { const file = event.target.files?.[0]; if (!file) return; const maxSize = path.toLowerCase().includes('favicon') ? 250_000 : 900_000; if (file.size > maxSize) { alert(`Use uma imagem menor que ${Math.round(maxSize / 1000)} KB para o site continuar leve.`); return; } const reader = new FileReader(); reader.onload = () => onChange(path, String(reader.result || '')); reader.readAsDataURL(file); }
-  return <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-4"><div className="flex flex-wrap items-center gap-3"><label className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-bold text-white"><Upload className="h-4 w-4" /> Escolher imagem<input type="file" accept="image/*" onChange={upload} className="hidden" /></label>{value && <button type="button" onClick={() => onChange(path, '')} className="inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-bold text-red-600"><X className="h-4 w-4" /> Remover</button>}</div><p className="mt-2 text-xs text-slate-500">PNG, JPG, WEBP ou SVG. Para ícone use imagem quadrada; para compartilhamento use 1200x630.</p>{value && <img src={value} alt="Prévia" className="mt-4 max-h-56 w-full rounded-xl border bg-slate-50 object-contain" />}<textarea value={value} onChange={(event) => onChange(path, event.target.value)} placeholder="Ou cole uma URL/base64 de imagem aqui" className="mt-4 w-full min-h-20 rounded-xl border bg-slate-50 p-3 text-xs" /></div>;
+  const [fileInfo, setFileInfo] = useState('');
+
+  function upload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setFileInfo(`${file.name} • ${formatBytes(file.size)}`);
+    const reader = new FileReader();
+    reader.onload = () => onChange(path, String(reader.result || ''));
+    reader.readAsDataURL(file);
+  }
+
+  return <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-4"><div className="flex flex-wrap items-center gap-3"><label className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-bold text-white"><Upload className="h-4 w-4" /> Escolher imagem<input type="file" accept="image/*" onChange={upload} className="hidden" /></label>{value && <button type="button" onClick={() => { setFileInfo(''); onChange(path, ''); }} className="inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-bold text-red-600"><X className="h-4 w-4" /> Remover</button>}</div><p className="mt-2 text-xs text-slate-500">PNG, JPG, WEBP ou SVG. O upload não bloqueia mais por tamanho, mas imagens muito grandes podem deixar o site e o salvamento mais lentos. Recomendado: até 2 MB.</p>{fileInfo && <p className="mt-2 text-xs font-semibold text-emerald-700">Arquivo carregado: {fileInfo}</p>}{value && <img src={value} alt="Prévia" className="mt-4 max-h-56 w-full rounded-xl border bg-slate-50 object-contain" />}<textarea value={value} onChange={(event) => onChange(path, event.target.value)} placeholder="Ou cole uma URL/base64 de imagem aqui" className="mt-4 w-full min-h-20 rounded-xl border bg-slate-50 p-3 text-xs" /></div>;
 }
 
-function photoCard(photo: any) { return <div className="overflow-hidden rounded-xl border bg-white"><div className="aspect-[4/3] bg-slate-100 flex items-center justify-center">{photo?.imageDataUrl ? <img src={photo.imageDataUrl} className="h-full w-full object-cover" /> : <span className="text-xs text-slate-400">Sem imagem</span>}</div><div className="p-3"><b>{photo?.title}</b><p className="text-xs text-slate-500">{photo?.description}</p></div></div>; }
+function photoCard(photo: any) {
+  return <div className="overflow-hidden rounded-xl border bg-white"><div className="aspect-[4/3] bg-slate-100 flex items-center justify-center">{photo?.imageDataUrl ? <img src={photo.imageDataUrl} className="h-full w-full object-cover" /> : <span className="text-xs text-slate-400">Sem imagem</span>}</div><div className="p-3"><b>{photo?.title}</b><p className="text-xs text-slate-500">{photo?.description}</p></div></div>;
+}
 
 function Preview({ content, section }: { content: any; section: string }) {
   if (section === 'brand') return <div className="space-y-3"><h3 className="text-2xl font-black text-teal-700">{content.brand.name}</h3><p>WhatsApp: {content.brand.whatsapp}</p><p>Telefone: {content.brand.phoneDisplay}</p><p>E-mail: {content.brand.email}</p><p>{content.brand.city}</p><p>{content.brand.coverage}</p>{content.brand.logoDataUrl && <img src={content.brand.logoDataUrl} className="h-24 w-24 object-contain rounded-xl bg-white border" />}</div>;
