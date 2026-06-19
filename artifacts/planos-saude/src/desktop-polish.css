@@ -1,0 +1,217 @@
+/* Polimento desktop: melhora fluidez, navegacao e sensacao moderna sem remover conteudo ou animacoes. */
+
+:root {
+  --sw-ease-out: cubic-bezier(.22, 1, .36, 1);
+  --sw-ease-smooth: cubic-bezier(.16, 1, .3, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (min-width: 1024px) {
+  /* Scroll mais leve e paginas mais suaves no desktop. */
+  body {
+    overscroll-behavior-y: none;
+  }
+
+  main,
+  section,
+  header,
+  footer {
+    backface-visibility: hidden;
+  }
+
+  section {
+    scroll-margin-top: 94px;
+  }
+
+  /* Header desktop mais moderno e rapido sem pesar. */
+  header,
+  header.sticky,
+  header.fixed {
+    transition:
+      background-color 160ms var(--sw-ease-out),
+      border-color 160ms var(--sw-ease-out),
+      box-shadow 160ms var(--sw-ease-out),
+      backdrop-filter 160ms var(--sw-ease-out),
+      transform 160ms var(--sw-ease-out) !important;
+    will-change: background-color, box-shadow, transform;
+    transform: translate3d(0, 0, 0);
+  }
+
+  header nav a,
+  header a,
+  header button {
+    transition:
+      color 180ms var(--sw-ease-out),
+      background-color 180ms var(--sw-ease-out),
+      border-color 180ms var(--sw-ease-out),
+      transform 180ms var(--sw-ease-out),
+      box-shadow 180ms var(--sw-ease-out) !important;
+  }
+
+  header nav a:hover,
+  header a:hover,
+  header button:hover {
+    transform: translateY(-1px);
+  }
+
+  /* Cards e blocos interativos com animacao fluida em GPU. */
+  .rounded-2xl,
+  .rounded-3xl,
+  .rounded-\[2rem\],
+  .rounded-\[2\.5rem\] {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  .rounded-2xl:hover,
+  .rounded-3xl:hover {
+    transition:
+      transform 240ms var(--sw-ease-smooth),
+      box-shadow 240ms var(--sw-ease-smooth),
+      border-color 240ms var(--sw-ease-smooth),
+      background-color 240ms var(--sw-ease-smooth) !important;
+  }
+
+  a,
+  button,
+  [role="button"] {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  a:hover,
+  button:hover,
+  [role="button"]:hover {
+    transition-timing-function: var(--sw-ease-out) !important;
+  }
+
+  /* Imagens mais suaves sem causar travamento de scroll. */
+  img {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    image-rendering: auto;
+  }
+
+  picture,
+  figure {
+    transform: translateZ(0);
+  }
+
+  /* Seções fora da tela ficam mais leves, preservando layout. */
+  section:not(#inicio) {
+    content-visibility: auto;
+    contain-intrinsic-size: 900px;
+  }
+
+  #inicio,
+  header,
+  footer {
+    content-visibility: visible;
+  }
+
+  /* Melhora fluidez de sombras pesadas. */
+  .shadow-sm,
+  .shadow,
+  .shadow-md,
+  .shadow-lg,
+  .shadow-xl,
+  .shadow-2xl {
+    will-change: transform;
+  }
+
+  /* Botoes mais modernos e responsivos. */
+  a[class*="bg-primary"],
+  button[class*="bg-primary"],
+  a[class*="bg-green"],
+  button[class*="bg-green"] {
+    box-shadow: 0 14px 34px rgba(34, 197, 94, .16);
+  }
+
+  a[class*="bg-primary"]:hover,
+  button[class*="bg-primary"]:hover,
+  a[class*="bg-green"]:hover,
+  button[class*="bg-green"]:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 18px 42px rgba(34, 197, 94, .22);
+  }
+
+  /* Animações ficam mais macias sem serem removidas. */
+  [class*="animate"],
+  [style*="animation"] {
+    animation-timing-function: var(--sw-ease-smooth) !important;
+  }
+
+  [style*="transition"],
+  .transition,
+  .transition-all,
+  .transition-colors,
+  .transition-transform {
+    transition-timing-function: var(--sw-ease-out) !important;
+  }
+
+  /* Carrossel das operadoras mais suave no desktop. */
+  .sw-operator-track {
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .sw-operator-item {
+    transition:
+      opacity 220ms var(--sw-ease-out),
+      transform 220ms var(--sw-ease-out),
+      color 220ms var(--sw-ease-out) !important;
+  }
+
+  /* Evita gargalo comum do blur em fundos grandes no desktop. */
+  .backdrop-blur,
+  .backdrop-blur-sm,
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
+  .backdrop-blur-xl {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+@media (min-width: 1280px) {
+  /* Desktop grande com navegacao mais confortavel. */
+  .container {
+    scroll-margin-top: 96px;
+  }
+
+  #inicio h1 {
+    text-wrap: balance;
+  }
+
+  section h2,
+  section h3 {
+    text-wrap: balance;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
+  /* Entrada sutil de seções ao rolar, preservando as animações existentes. */
+  section:not(#inicio) {
+    animation: swDesktopSectionFade .55s var(--sw-ease-smooth) both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 22%;
+  }
+
+  @keyframes swDesktopSectionFade {
+    from {
+      opacity: .72;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
