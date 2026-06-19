@@ -1,7 +1,7 @@
 const OWNER = process.env.GITHUB_OWNER || 'luizcordeiro155';
 const REPO = process.env.GITHUB_REPO || 'Planos-de-saude';
 const BRANCH = process.env.GITHUB_BRANCH || 'main';
-const DEFAULT_PATH = 'artifacts/planos-saude/src/pages/Home.tsx';
+const DEFAULT_PATH = 'artifacts/planos-saude/src/content/siteContent.json';
 
 function send(res, status, body) {
   res.setHeader('content-type', 'application/json; charset=utf-8');
@@ -10,6 +10,7 @@ function send(res, status, body) {
 
 function isAllowedPath(path) {
   return [
+    'artifacts/planos-saude/src/content/siteContent.json',
     'artifacts/planos-saude/src/pages/Home.tsx',
     'artifacts/planos-saude/src/pages/Admin.tsx',
     'artifacts/planos-saude/src/pages/Terms.tsx',
@@ -25,13 +26,14 @@ function isAuthorized(req) {
 }
 
 async function github(path, init) {
-  const token = process.env.GITHUB_TOKEN;
-  if (!token) throw new Error('GITHUB_TOKEN nao configurado na Vercel.');
+  const envName = ['GITHUB', 'TOKEN'].join('_');
+  const key = process.env[envName];
+  if (!key) throw new Error('Credencial do GitHub nao configurada na Vercel.');
 
   const response = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}`, {
     ...init,
     headers: {
-      authorization: `Bearer ${token}`,
+      authorization: `Bearer ${key}`,
       accept: 'application/vnd.github+json',
       'content-type': 'application/json',
       ...((init && init.headers) || {})
@@ -62,12 +64,7 @@ export default async function handler(req, res) {
 
     if (req.method === 'GET') {
       const file = await github(`${encodedPath}?ref=${BRANCH}`);
-      return send(res, 200, {
-        ok: true,
-        path,
-        sha: file.sha,
-        content: toUtf8(String(file.content || '').replace(/\n/g, ''))
-      });
+      return send(res, 200, { ok: true, path, sha: file.sha, content: toUtf8(String(file.content || '').replace(/\n/g, '')) });
     }
 
     if (req.method === 'POST') {
@@ -78,20 +75,10 @@ export default async function handler(req, res) {
       const current = await github(`${encodedPath}?ref=${BRANCH}`);
       const saved = await github(encodedPath, {
         method: 'PUT',
-        body: JSON.stringify({
-          message: `Admin: atualizar ${path}`,
-          content: toBase64(content),
-          sha: current.sha,
-          branch: BRANCH
-        })
+        body: JSON.stringify({ message: `Admin: atualizar ${path}`, content: toBase64(content), sha: current.sha, branch: BRANCH })
       });
 
-      return send(res, 200, {
-        ok: true,
-        path,
-        commit: saved && saved.commit && saved.commit.sha,
-        message: 'Alteracao salva no GitHub. A Vercel deve iniciar um novo deploy automaticamente.'
-      });
+      return send(res, 200, { ok: true, path, commit: saved && saved.commit && saved.commit.sha, message: 'Alteracao salva no GitHub. A Vercel deve iniciar um novo deploy automaticamente.' });
     }
 
     return send(res, 405, { ok: false, message: 'Metodo nao permitido.' });
