@@ -104,7 +104,8 @@
     "types": [
       "Individual",
       "Familiar",
-      "Empresarial"
+      "Empresarial",
+      "Coletivo por Adesão"
     ],
     "button": "Enviar Cotação pelo WhatsApp",
     "note": "Ao clicar, você será direcionado ao WhatsApp com sua mensagem já preenchida."
@@ -144,6 +145,16 @@
           "Melhores condições"
         ],
         "button": "Cotar Plano Empresarial"
+      },
+      {
+        "title": "Plano Coletivo por Adesão",
+        "description": "Opção para profissionais, estudantes e associados a entidades de classe, com condições diferenciadas conforme elegibilidade.",
+        "features": [
+          "Por entidade de classe",
+          "Condições competitivas",
+          "Análise de elegibilidade"
+        ],
+        "button": "Cotar Coletivo por Adesão"
       }
     ]
   },
