@@ -143,3 +143,15 @@
     font-family: var(--app-font-display);
   }
 }
+
+@layer utilities {
+  a[href^="tel:"] {
+    white-space: nowrap;
+    min-width: max-content;
+    flex-shrink: 0;
+  }
+
+  a[href^="tel:"] svg {
+    flex-shrink: 0;
+  }
+}
