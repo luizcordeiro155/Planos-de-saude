@@ -1,12 +1,12 @@
-/* Correcoes de estabilidade visual no primeiro carregamento mobile.
-   Evita flash quebrado do inicio do site quando fonte/imagens/animações ainda estão estabilizando. */
+/* Correcoes fortes para o topo mobile.
+   Remove clipping, altura exagerada e animacoes que cortavam o titulo no primeiro carregamento. */
 
 html,
 body,
 #root {
   width: 100%;
   max-width: 100%;
-  overflow-x: clip;
+  overflow-x: hidden;
 }
 
 #root {
@@ -16,7 +16,6 @@ body,
 header {
   transform: translateZ(0);
   backface-visibility: hidden;
-  contain: layout paint;
 }
 
 header img,
@@ -24,13 +23,23 @@ header svg {
   flex-shrink: 0;
 }
 
+#inicio,
+#inicio *,
+#inicio .container,
+#inicio [class*="container"],
+#inicio .grid,
+#inicio div {
+  clip-path: none !important;
+}
+
 #inicio {
-  overflow: hidden;
+  overflow: visible !important;
   isolation: isolate;
-  contain: layout paint;
+  contain: none !important;
 }
 
 #inicio h1,
+#inicio h1 *,
 #inicio p,
 #inicio a,
 #inicio button,
@@ -65,11 +74,11 @@ header svg {
   }
 
   header {
-    min-height: 86px;
+    min-height: 84px;
   }
 
   header .container {
-    min-height: 86px !important;
+    min-height: 84px !important;
   }
 
   header a,
@@ -86,31 +95,62 @@ header svg {
 
   #inicio {
     min-height: auto !important;
-    padding-top: 6.25rem !important;
-    padding-bottom: 3.5rem !important;
+    height: auto !important;
+    padding-top: 1.75rem !important;
+    padding-bottom: 3.25rem !important;
+    margin-top: 0 !important;
+    overflow: visible !important;
   }
 
+  #inicio > .container,
   #inicio .container,
   #inicio [class*="container"] {
     min-height: auto !important;
+    height: auto !important;
+    padding-top: 0 !important;
+    overflow: visible !important;
   }
 
   #inicio .grid {
     display: grid !important;
     grid-template-columns: 1fr !important;
-    gap: 2rem !important;
-    align-items: center !important;
+    gap: 1.35rem !important;
+    align-items: start !important;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  #inicio .grid > * {
+    min-height: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
   }
 
   #inicio h1 {
     display: block !important;
     min-height: 0 !important;
+    height: auto !important;
     margin-top: 0 !important;
-    font-size: clamp(2.25rem, 10.5vw, 3.05rem) !important;
-    line-height: 1.08 !important;
-    letter-spacing: -0.045em !important;
+    padding-top: 0.35rem !important;
+    padding-bottom: 0.2rem !important;
+    font-size: clamp(2.05rem, 9.6vw, 2.7rem) !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.038em !important;
     text-align: center !important;
     white-space: normal !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+
+  #inicio h1 span,
+  #inicio h1 strong,
+  #inicio h1 em,
+  #inicio h1 div {
+    display: inline !important;
+    line-height: inherit !important;
+    overflow: visible !important;
+    transform: none !important;
   }
 
   #inicio p {
@@ -128,7 +168,7 @@ header svg {
   }
 
   #inicio a {
-    transform: translateZ(0);
+    transform: none !important;
   }
 
   #inicio img {
@@ -139,11 +179,33 @@ header svg {
 
   #inicio [class*="animate"],
   #inicio [style*="animation"],
-  #inicio [style*="transition"] {
-    animation-duration: 0.001s !important;
-    animation-delay: 0s !important;
-    transition-duration: 0.001s !important;
-    transition-delay: 0s !important;
+  #inicio [style*="transition"],
+  #inicio [style*="transform"] {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+
+  #inicio .opacity-0,
+  #inicio .translate-y-10,
+  #inicio .translate-y-8,
+  #inicio .translate-y-6,
+  #inicio .-translate-y-10,
+  #inicio .-translate-y-8,
+  #inicio .-translate-y-6 {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 420px) {
+  #inicio {
+    padding-top: 1.25rem !important;
+  }
+
+  #inicio h1 {
+    font-size: clamp(1.95rem, 9vw, 2.45rem) !important;
+    line-height: 1.14 !important;
   }
 }
 
