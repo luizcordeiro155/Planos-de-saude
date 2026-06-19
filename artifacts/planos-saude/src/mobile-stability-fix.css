@@ -1,5 +1,5 @@
-/* Ajustes mobile seguros.
-   Mantem o cabecalho original e corrige apenas o espacamento/renderizacao do bloco inicial. */
+/* Ajustes de estabilidade e performance sem remover as animacoes do site.
+   Corrige o flash do header no mobile e melhora a fluidez no desktop. */
 
 html,
 body,
@@ -13,8 +13,33 @@ body,
   background: hsl(var(--background));
 }
 
+/* Header solido desde o primeiro frame: evita aparecer transparente antes da barra branca. */
+header,
+header.sticky,
+header.fixed {
+  background: rgba(255, 255, 255, 0.98) !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.88) !important;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transform: translateZ(0);
+  will-change: transform;
+  z-index: 50 !important;
+}
+
+header::before,
+header::after {
+  pointer-events: none;
+}
+
+header img,
+header svg {
+  flex-shrink: 0;
+}
+
 #inicio {
   isolation: isolate;
+  scroll-margin-top: 96px;
 }
 
 #inicio h1,
@@ -24,6 +49,35 @@ body,
   word-break: normal !important;
   overflow-wrap: normal !important;
   hyphens: none !important;
+}
+
+/* Melhora a fluidez desktop sem tirar animacoes. */
+@media (min-width: 768px) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  section {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 820px;
+  }
+
+  header,
+  #inicio,
+  footer {
+    content-visibility: visible;
+    contain-intrinsic-size: auto;
+  }
+
+  img {
+    content-visibility: auto;
+  }
+
+  .shadow-2xl,
+  .shadow-xl,
+  .shadow-lg {
+    backface-visibility: hidden;
+  }
 }
 
 @media (max-width: 767px) {
@@ -36,22 +90,37 @@ body,
     min-width: 320px;
   }
 
-  /* Nao mexer no header: deixa a navegacao exatamente como o tema original. */
   header,
-  header *,
-  header .container,
+  header.sticky,
+  header.fixed {
+    min-height: 88px;
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transform: translate3d(0, 0, 0) !important;
+    transition: box-shadow 180ms ease, border-color 180ms ease !important;
+  }
+
+  header .container {
+    min-height: 88px !important;
+  }
+
   header a,
-  header .group,
-  header img,
-  header svg {
-    transform: none !important;
-    clip-path: none !important;
+  header .group {
+    min-width: 0;
+  }
+
+  header img {
+    width: auto;
+    height: auto;
+    max-height: 58px;
+    object-fit: contain;
   }
 
   #inicio {
     min-height: auto !important;
     height: auto !important;
-    padding-top: 6.75rem !important;
+    padding-top: 7.25rem !important;
     padding-bottom: 3.75rem !important;
     margin-top: 0 !important;
     overflow: hidden !important;
@@ -80,18 +149,19 @@ body,
 
   #inicio .inline-flex.rounded-full {
     display: inline-flex !important;
-    max-width: 100% !important;
+    max-width: calc(100vw - 2rem) !important;
     margin-left: auto !important;
     margin-right: auto !important;
     position: static !important;
     transform: none !important;
+    white-space: normal !important;
   }
 
   #inicio h1 {
     display: block !important;
     min-height: 0 !important;
     height: auto !important;
-    margin-top: 0.75rem !important;
+    margin-top: 0.65rem !important;
     padding-top: 0.35rem !important;
     padding-bottom: 0.35rem !important;
     font-size: clamp(2.1rem, 10vw, 3rem) !important;
@@ -109,7 +179,6 @@ body,
   #inicio h1 div {
     line-height: inherit !important;
     overflow: visible !important;
-    transform: none !important;
   }
 
   #inicio p {
@@ -127,20 +196,28 @@ body,
     height: auto;
   }
 
-  /* Evita apenas o flash de entrada do hero no mobile. */
+  /* Reduz custo do primeiro frame no topo mobile, sem matar as animacoes do restante do site. */
   #inicio [class*="animate"],
   #inicio [style*="animation"],
   #inicio [style*="transition"] {
-    animation-duration: 0.001s !important;
     animation-delay: 0s !important;
-    transition-duration: 0.001s !important;
     transition-delay: 0s !important;
   }
 }
 
 @media (max-width: 420px) {
+  header,
+  header.sticky,
+  header.fixed {
+    min-height: 84px;
+  }
+
+  header .container {
+    min-height: 84px !important;
+  }
+
   #inicio {
-    padding-top: 6.25rem !important;
+    padding-top: 6.9rem !important;
   }
 
   #inicio h1 {
