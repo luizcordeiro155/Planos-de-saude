@@ -13,11 +13,32 @@
     "Planos",
     "Coberturas",
     "Diferenciais",
-    "Fotos",
     "Como Funciona",
     "Depoimentos",
     "Dúvidas"
   ],
+  "photos": {
+    "hero": {
+      "imageDataUrl": "",
+      "title": "Foto principal",
+      "description": "Foto para aparecer ao lado da primeira seção do site."
+    },
+    "quote": {
+      "imageDataUrl": "",
+      "title": "Foto de atendimento",
+      "description": "Foto para aparecer próxima à seção de cotação e atendimento pelo WhatsApp."
+    },
+    "differentials": {
+      "imageDataUrl": "",
+      "title": "Foto institucional",
+      "description": "Foto para aparecer junto aos diferenciais da corretora."
+    },
+    "finalCta": {
+      "imageDataUrl": "",
+      "title": "Foto final",
+      "description": "Foto para aparecer perto da chamada final do site."
+    }
+  },
   "hero": {
     "badge": "Corretora de Saúde Especializada - Belo Horizonte, MG",
     "titleStart": "O plano de saúde",
@@ -101,19 +122,6 @@
     ],
     "ratingTitle": "Nota 4.9 / 5",
     "ratingSubtitle": "Avaliação dos clientes"
-  },
-  "gallery": {
-    "kicker": "Fotos",
-    "title": "Conheça mais sobre nosso atendimento",
-    "description": "Adicione fotos da equipe, escritório, atendimento, clientes ou materiais da corretora para deixar o site mais humano e confiável.",
-    "items": [
-      { "imageDataUrl": "", "title": "Foto 1", "description": "Use este espaço para uma foto da equipe ou do escritório." },
-      { "imageDataUrl": "", "title": "Foto 2", "description": "Use este espaço para mostrar atendimento, reunião ou estrutura." },
-      { "imageDataUrl": "", "title": "Foto 3", "description": "Use este espaço para um material institucional ou campanha." },
-      { "imageDataUrl": "", "title": "Foto 4", "description": "Use este espaço para outra imagem importante do negócio." },
-      { "imageDataUrl": "", "title": "Foto 5", "description": "Imagem opcional para completar a galeria." },
-      { "imageDataUrl": "", "title": "Foto 6", "description": "Imagem opcional para completar a galeria." }
-    ]
   },
   "process": {
     "kicker": "Processo Simples",
