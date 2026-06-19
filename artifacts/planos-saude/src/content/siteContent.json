@@ -64,7 +64,7 @@
   },
   "metrics": [
     {
-      "value": "12000",
+      "value": "10000",
       "suffix": "+",
       "label": "Clientes Atendidos"
     },
