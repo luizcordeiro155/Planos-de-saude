@@ -25,15 +25,18 @@ function isAuthorized(req) {
   return Boolean(secret && received === secret);
 }
 
-async function github(path, init) {
+function githubToken() {
   const envName = ['GITHUB', 'TOKEN'].join('_');
   const key = process.env[envName];
   if (!key) throw new Error('Credencial do GitHub nao configurada na Vercel.');
+  return key;
+}
 
+async function github(path, init) {
   const response = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}`, {
     ...init,
     headers: {
-      authorization: `Bearer ${key}`,
+      authorization: `Bearer ${githubToken()}`,
       accept: 'application/vnd.github+json',
       'content-type': 'application/json',
       ...((init && init.headers) || {})
@@ -51,6 +54,24 @@ function toUtf8(value) {
 
 function toBase64(value) {
   return Buffer.from(value, 'utf8').toString('base64');
+}
+
+async function getFileContent(file) {
+  const encoded = String(file.content || '').replace(/\n/g, '').trim();
+  if (encoded) return toUtf8(encoded);
+
+  // Para arquivos maiores que ~1 MB, a Contents API do GitHub retorna content vazio.
+  // Nesses casos usamos download_url/raw para o admin nao quebrar com JSON vazio.
+  if (file.download_url) {
+    const raw = await fetch(file.download_url, {
+      headers: { authorization: `Bearer ${githubToken()}` }
+    });
+    const text = await raw.text();
+    if (!raw.ok) throw new Error(`Erro ao baixar arquivo grande: ${raw.status}`);
+    return text;
+  }
+
+  throw new Error('Nao foi possivel ler o conteudo do arquivo. O GitHub retornou conteudo vazio.');
 }
 
 function validateSiteContent(path, content) {
@@ -79,7 +100,9 @@ export default async function handler(req, res) {
 
     if (req.method === 'GET') {
       const file = await github(`${encodedPath}?ref=${BRANCH}`);
-      return send(res, 200, { ok: true, path, sha: file.sha, content: toUtf8(String(file.content || '').replace(/\n/g, '')) });
+      const content = await getFileContent(file);
+      validateSiteContent(path, content);
+      return send(res, 200, { ok: true, path, sha: file.sha, content });
     }
 
     if (req.method === 'POST') {
