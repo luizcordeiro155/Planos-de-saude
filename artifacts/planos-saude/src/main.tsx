@@ -30,16 +30,18 @@ function operatorInitials(name: string) {
 }
 
 function ensureOperatorCarouselStyle() {
-  if (document.querySelector("#operator-carousel-style")) return;
+  const existing = document.querySelector("#operator-carousel-style");
+  if (existing) existing.remove();
+
   const style = document.createElement("style");
   style.id = "operator-carousel-style";
   style.textContent = `
     @keyframes swOperatorMarquee {
       from { transform: translateX(0); }
-      to { transform: translateX(-100%); }
+      to { transform: translateX(-50%); }
     }
     .sw-operator-section {
-      padding: 52px 0;
+      padding: 54px 0;
       overflow: hidden;
       border-bottom: 1px solid hsl(var(--border));
       background: hsl(var(--background));
@@ -48,18 +50,19 @@ function ensureOperatorCarouselStyle() {
       position: relative;
       overflow: hidden;
       width: 100%;
-      margin-top: 26px;
-      mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-      -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+      margin-top: 28px;
+      mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
     }
     .sw-operator-track {
       display: flex;
       align-items: center;
-      gap: clamp(34px, 5.5vw, 82px);
+      gap: clamp(46px, 7vw, 110px);
       width: max-content;
-      animation: swOperatorMarquee 34s linear infinite;
+      min-width: 200%;
+      animation: swOperatorMarquee 42s linear infinite;
       will-change: transform;
-      padding: 10px 0;
+      padding: 14px 0;
     }
     .sw-operator-marquee:hover .sw-operator-track {
       animation-play-state: paused;
@@ -68,12 +71,12 @@ function ensureOperatorCarouselStyle() {
       flex: 0 0 auto;
       display: inline-flex;
       align-items: center;
-      gap: 16px;
+      gap: 20px;
       min-width: max-content;
       color: hsl(var(--muted-foreground));
-      opacity: .62;
+      opacity: .72;
       font-family: var(--font-display, inherit);
-      font-size: clamp(1.2rem, 1rem + 1vw, 1.85rem);
+      font-size: clamp(1.35rem, 1.1rem + 1.1vw, 2rem);
       font-weight: 900;
       letter-spacing: -0.02em;
       transition: opacity .25s ease, transform .25s ease, color .25s ease;
@@ -84,38 +87,68 @@ function ensureOperatorCarouselStyle() {
       color: hsl(var(--primary));
     }
     .sw-operator-logo {
-      width: 64px;
-      height: 64px;
-      border-radius: 18px;
+      width: 96px !important;
+      height: 96px !important;
+      min-width: 96px !important;
+      border-radius: 24px;
       object-fit: contain;
       background: white;
-      padding: 9px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, .10);
+      padding: 12px;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, .12);
       border: 1px solid hsl(var(--border));
     }
     .sw-operator-initials {
-      width: 64px;
-      height: 64px;
-      border-radius: 18px;
+      width: 96px !important;
+      height: 96px !important;
+      min-width: 96px !important;
+      border-radius: 24px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       background: hsl(var(--primary) / .08);
       color: hsl(var(--primary));
-      font-size: 1rem;
+      font-size: 1.25rem;
       font-weight: 900;
       border: 1px solid hsl(var(--primary) / .14);
     }
     @media (max-width: 640px) {
-      .sw-operator-section { padding: 38px 0; }
-      .sw-operator-marquee { margin-top: 20px; mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent); }
-      .sw-operator-track { gap: 30px; animation-duration: 26s; }
-      .sw-operator-item { font-size: 1.12rem; gap: 12px; }
-      .sw-operator-logo, .sw-operator-initials { width: 50px; height: 50px; border-radius: 15px; }
-      .sw-operator-logo { padding: 7px; }
+      .sw-operator-section { padding: 40px 0; }
+      .sw-operator-marquee {
+        margin-top: 22px;
+        mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+        -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+      }
+      .sw-operator-track {
+        gap: 42px;
+        animation-duration: 30s;
+        padding: 10px 0;
+      }
+      .sw-operator-item {
+        font-size: 1.2rem;
+        gap: 14px;
+      }
+      .sw-operator-logo, .sw-operator-initials {
+        width: 72px !important;
+        height: 72px !important;
+        min-width: 72px !important;
+        border-radius: 18px;
+      }
+      .sw-operator-logo { padding: 9px; }
     }
   `;
   document.head.appendChild(style);
+}
+
+function renderOperatorItem(item: any) {
+  const name = operatorName(item);
+  const logo = operatorLogo(item);
+  return `
+    <span class="sw-operator-item">
+      ${logo ? `<img src="${logo}" alt="${name}" class="sw-operator-logo" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';" />` : ""}
+      <span class="sw-operator-initials" style="${logo ? "display:none" : ""}">${operatorInitials(name)}</span>
+      <span>${name}</span>
+    </span>
+  `;
 }
 
 function renderOperatorBrandCarousel() {
@@ -133,23 +166,15 @@ function renderOperatorBrandCarousel() {
   const section = titleNode?.closest("section") as HTMLElement | null;
   if (!section || !titleNode) return;
 
+  const loopItems = [...items, ...items, ...items, ...items];
+
   section.className = "sw-operator-section";
   section.innerHTML = `
     <div class="container mx-auto px-4 md:px-6">
       <p class="text-center text-sm font-bold uppercase tracking-[0.2em] text-muted-foreground/60">${title || "Trabalhamos com as maiores operadoras de saúde do Brasil"}</p>
       <div class="sw-operator-marquee" aria-label="Operadoras comercializadas">
         <div class="sw-operator-track">
-          ${items.map((item) => {
-            const name = operatorName(item);
-            const logo = operatorLogo(item);
-            return `
-              <span class="sw-operator-item">
-                ${logo ? `<img src="${logo}" alt="${name}" class="sw-operator-logo" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';" />` : ""}
-                <span class="sw-operator-initials" style="${logo ? "display:none" : ""}">${operatorInitials(name)}</span>
-                <span>${name}</span>
-              </span>
-            `;
-          }).join("")}
+          ${loopItems.map(renderOperatorItem).join("")}
         </div>
       </div>
     </div>
