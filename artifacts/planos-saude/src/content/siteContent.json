@@ -1,0 +1,153 @@
+{
+  "brand": {
+    "name": "Rota Seguros",
+    "logoDataUrl": "",
+    "whatsapp": "553193659875",
+    "phoneDisplay": "(31) 9365-9875",
+    "email": "contato@rotaseguros.com.br",
+    "city": "Belo Horizonte, MG",
+    "coverage": "Atendemos todo o Brasil"
+  },
+  "nav": ["Cotação Rápida", "Planos", "Coberturas", "Diferenciais", "Como Funciona", "Depoimentos", "Dúvidas"],
+  "hero": {
+    "badge": "Corretora de Saúde Especializada - Belo Horizonte, MG",
+    "titleStart": "O plano de saúde",
+    "titleHighlight": "certo para você",
+    "titleEnd": "sem complicação.",
+    "subtitle": "Somos especialistas em planos de saúde individuais, familiares e empresariais. Consultoria gratuita, imparcial e com as melhores operadoras do mercado.",
+    "supportText": "Atendemos por WhatsApp rápido, sem burocracia e sem compromisso.",
+    "primaryButton": "Fazer Cotação Gratuita",
+    "secondaryButton": "Conhecer os Planos"
+  },
+  "metrics": [
+    { "value": "12000", "suffix": "+", "label": "Clientes Atendidos" },
+    { "value": "98", "suffix": "%", "label": "Taxa de Satisfação" },
+    { "value": "15", "suffix": "+", "label": "Anos no Mercado" },
+    { "value": "22", "suffix": "+", "label": "Operadoras Parceiras" }
+  ],
+  "operators": {
+    "title": "Trabalhamos com as maiores operadoras de saúde do Brasil",
+    "items": ["Porto Seguro Saúde", "Prevent Sênior", "Unimed", "Amil", "SulAmérica", "Bradesco Saúde", "NotreDame Intermédica", "Hapvida"]
+  },
+  "quote": {
+    "kicker": "Cotação Gratuita",
+    "title": "Receba sua cotação em minutos pelo WhatsApp.",
+    "description": "Preencha os campos ao lado e clique no botão. Sua mensagem chegará já formatada para o nosso especialista, sem precisar digitar nada.",
+    "benefits": ["Consultoria 100% gratuita e sem compromisso", "Respondemos em até 5 minutos em horário comercial", "Comparamos todas as operadoras para você", "Sem burocracia, tudo pelo WhatsApp"],
+    "formTitle": "Solicite sua cotação",
+    "formSubtitle": "Preencha e envie, simples assim.",
+    "nameLabel": "Seu nome completo",
+    "namePlaceholder": "Ex: João da Silva",
+    "cityLabel": "Cidade",
+    "cityPlaceholder": "Ex: Belo Horizonte, MG",
+    "typeLabel": "Tipo de plano",
+    "types": ["Individual", "Familiar", "Empresarial"],
+    "button": "Enviar Cotação pelo WhatsApp",
+    "note": "Ao clicar, você será direcionado ao WhatsApp com sua mensagem já preenchida."
+  },
+  "plans": {
+    "kicker": "Nossos Planos",
+    "title": "Uma solução para cada momento de vida",
+    "description": "Seja para você, sua família ou sua empresa, encontramos as melhores opções com as melhores condições do mercado. Consulte-nos gratuitamente pelo WhatsApp.",
+    "items": [
+      { "title": "Plano Individual", "description": "Ideal para quem busca proteção individual com orientação profissional.", "features": ["Consultas", "Exames", "Rede credenciada"], "button": "Cotar Plano Individual" },
+      { "title": "Plano Familiar", "badge": "Mais Buscado", "description": "Proteção completa para toda a família com benefícios exclusivos para crianças, gestantes e idosos.", "features": ["Dependentes", "Maternidade", "Urgência"], "button": "Cotar Plano Familiar" },
+      { "title": "Plano Empresarial", "description": "Planos corporativos acessíveis para MEIs, microempresas e grandes empresas. Valorize sua equipe com saúde de qualidade.", "features": ["MEI e CNPJ", "Gestão simples", "Melhores condições"], "button": "Cotar Plano Empresarial" }
+    ]
+  },
+  "coverages": {
+    "kicker": "Coberturas",
+    "title": "O que os planos podem cobrir",
+    "description": "De acordo com a ANS, os planos de saúde oferecem cobertura obrigatória para diversos procedimentos. Conheça os principais:",
+    "items": [
+      { "title": "Consultas Médicas", "description": "Acesso a médicos de todas as especialidades reconhecidas pelo CFM, incluindo clínico geral e especialistas." },
+      { "title": "Exames e Diagnósticos", "description": "Exames laboratoriais, de imagem como ressonância, tomografia, raio-x e ultrassonografia." },
+      { "title": "Internação Hospitalar", "description": "Cobertura para internações clínicas e cirúrgicas com acomodação em enfermaria ou apartamento." },
+      { "title": "Parto e Maternidade", "description": "Cobertura para parto normal e cesáreo, além de acompanhamento de toda a gestação." },
+      { "title": "Urgência e Emergência", "description": "Atendimento de emergência 24 horas, inclusive durante o período de carência." },
+      { "title": "Saúde Mental", "description": "Consultas com psiquiatra e psicólogo, além de tratamentos em CAPS e clínicas especializadas." },
+      { "title": "Tratamento Oncológico", "description": "Quimioterapia, radioterapia, imunoterapia e demais tratamentos para câncer cobertos pela ANS." },
+      { "title": "Fisioterapia e Reabilitação", "description": "Sessões de fisioterapia, fonoaudiologia e terapia ocupacional conforme indicação médica." },
+      { "title": "Odontológico (Opcional)", "description": "Planos odontológicos individuais e coletivos que podem ser contratados em conjunto ou separado." }
+    ],
+    "note": "Tem dúvida sobre alguma cobertura específica? Nosso time esclarece tudo gratuitamente.",
+    "button": "Tirar dúvidas no WhatsApp"
+  },
+  "differentials": {
+    "kicker": "Por que a Rota Seguros",
+    "title": "Mais do que um corretor, um parceiro de saúde.",
+    "description": "Não somos representantes de uma única operadora. Trabalhamos com as principais do mercado e buscamos, de forma independente, o plano que realmente faz sentido para o seu perfil e orçamento.",
+    "items": [
+      { "title": "Consultoria Imparcial e Gratuita", "description": "Analisamos todas as opções do mercado sem viés de vendas. Nossa missão é encontrar o melhor custo-benefício para você." },
+      { "title": "Atendimento Rápido pelo WhatsApp", "description": "Sem filas de espera, sem ligações inconvenientes. Responda no seu tempo e receba sua cotação em poucos minutos." },
+      { "title": "Suporte Completo Pós-Contratação", "description": "Estamos aqui mesmo após a contratação: autorizações, reembolsos, dúvidas sobre a rede credenciada, conte conosco." },
+      { "title": "Especialistas em Regulamentação ANS", "description": "Nossa equipe é altamente treinada nas regras da ANS e nas particularidades de cada operadora e produto." }
+    ],
+    "stats": [
+      { "label": "Consultoria", "value": "Gratuita" },
+      { "label": "Operadoras disponíveis", "value": "22+" },
+      { "label": "Tempo médio de resposta", "value": "5 min" },
+      { "label": "Satisfação dos clientes", "value": "98%" },
+      { "label": "Anos de experiência", "value": "15+" }
+    ],
+    "ratingTitle": "Nota 4.9 / 5",
+    "ratingSubtitle": "Avaliação dos clientes"
+  },
+  "process": {
+    "kicker": "Processo Simples",
+    "title": "Como funciona a nossa consultoria",
+    "description": "Da primeira mensagem no WhatsApp até o seu plano ativo, simples assim.",
+    "steps": [
+      { "number": "01", "title": "Fale com a Gente", "description": "Mande uma mensagem no WhatsApp. Sem formulários complicados, sem espera." },
+      { "number": "02", "title": "Análise do Perfil", "description": "Entendemos suas necessidades, rotina, cidade e orçamento em uma conversa rápida." },
+      { "number": "03", "title": "Cotação Personalizada", "description": "Apresentamos as melhores opções com comparativo de preços e coberturas." },
+      { "number": "04", "title": "Plano Ativo", "description": "Cuidamos de toda a burocracia. Você recebe sua carteirinha e começa a usar." }
+    ],
+    "button": "Começar Agora pelo WhatsApp"
+  },
+  "testimonials": {
+    "kicker": "Depoimentos",
+    "title": "O que nossos clientes dizem",
+    "description": "A satisfação de quem confia a saúde da família e da empresa à Rota Seguros.",
+    "items": [
+      { "name": "Carlos Eduardo Silva", "role": "Empresário - Belo Horizonte", "text": "Reduzi em mais de 30% os custos com o plano da minha empresa sem perder qualidade na cobertura. O atendimento foi excepcional do início ao fim.", "stars": "5" },
+      { "name": "Mariana Costa", "role": "Professora - Contagem, MG", "text": "Me ajudaram a encontrar o plano perfeito na chegada do meu bebê. Tiraram todas as minhas dúvidas sobre carência de parto com muita paciência e clareza.", "stars": "5" },
+      { "name": "Roberto Alves", "role": "Autônomo / MEI - Betim, MG", "text": "Como MEI, achei que não conseguiria um plano bom. A Rota Seguros me mostrou opções que eu nem sabia que existiam. Processo todo pelo WhatsApp, super prático.", "stars": "5" },
+      { "name": "Fernanda Rodrigues", "role": "Gerente de RH - Nova Lima, MG", "text": "Implantamos o plano corporativo para 40 funcionários em tempo recorde. Todo o processo foi conduzido com muito profissionalismo e clareza.", "stars": "5" },
+      { "name": "Paulo Mendes", "role": "Aposentado - Belo Horizonte", "text": "Tinha um plano há anos e nunca soube que podia fazer portabilidade. A equipe me orientou e hoje tenho uma cobertura muito melhor pagando menos.", "stars": "5" },
+      { "name": "Ana Luiza Pereira", "role": "Dentista - Vespasiano, MG", "text": "Indico a Rota Seguros para todos os meus pacientes e amigos. Atendimento rápido, honesto e resultado garantido. É de confiar mesmo.", "stars": "5" }
+    ]
+  },
+  "faq": {
+    "kicker": "Dúvidas",
+    "title": "Perguntas Frequentes",
+    "description": "Respondemos as principais dúvidas sobre planos de saúde e nosso processo de consultoria.",
+    "items": [
+      { "question": "A consultoria da Rota Seguros tem algum custo?", "answer": "Não. Nossa consultoria é 100% gratuita. Somos remunerados pelas operadoras de saúde, o que nos permite oferecer todo o suporte sem nenhum custo para você." },
+      { "question": "Como funciona o atendimento pelo WhatsApp?", "answer": "É simples: você envia uma mensagem, nossa equipe responde em até 5 minutos em horário comercial. Fazemos uma análise do seu perfil, apresentamos as melhores opções e você decide sem pressão." },
+      { "question": "Quais documentos são necessários para contratar?", "answer": "Geralmente RG, CPF, comprovante de residência e, em alguns casos, cartão do SUS. Para planos empresariais, o CNPJ e documentos da empresa. Nossa equipe orienta cada caso de forma personalizada." },
+      { "question": "Posso aproveitar as carências do meu plano atual?", "answer": "Sim. Se você já possui um plano ativo há mais de 2 anos, pode solicitar a portabilidade de carências para a nova operadora." },
+      { "question": "MEI pode contratar plano de saúde empresarial?", "answer": "Sim. Após 6 meses de abertura do MEI, você pode contratar planos empresariais a partir de 2 vidas, com condições geralmente mais vantajosas." },
+      { "question": "Qual a diferença entre plano com e sem coparticipação?", "answer": "No plano com coparticipação, você paga parte do valor de cada procedimento realizado. No plano sem coparticipação, você paga mensalidade fixa e não tem custo adicional por uso." },
+      { "question": "Em quanto tempo o plano fica ativo após a contratação?", "answer": "O prazo varia de acordo com a operadora, mas nossa equipe acompanha tudo até a ativação do plano." },
+      { "question": "Vocês atendem fora de Belo Horizonte?", "answer": "Sim. Atendemos clientes em todo o Brasil pelo WhatsApp." }
+    ],
+    "footerText": "Não encontrou sua dúvida aqui?",
+    "button": "Pergunte diretamente no WhatsApp"
+  },
+  "finalCta": {
+    "kicker": "Pronto para começar?",
+    "title": "Cuide da sua saúde com quem entende do assunto.",
+    "description": "Fale agora com um especialista da Rota Seguros e receba uma cotação personalizada, sem compromisso, em poucos minutos pelo WhatsApp.",
+    "button": "Solicitar Cotação Gratuita"
+  },
+  "footer": {
+    "description": "Corretora de planos de saúde especializada em encontrar a melhor solução para você, sua família e sua empresa. Consultoria gratuita e sem compromisso.",
+    "regulatoryLabel": "Regulamentado pela",
+    "regulatoryValue": "ANS",
+    "navigationTitle": "Navegação",
+    "contactTitle": "Contato",
+    "copyright": "© 2026 Rota Seguros. Todos os direitos reservados.",
+    "bottomText": "Corretora de Planos de Saúde - Belo Horizonte, MG"
+  }
+}
