@@ -1,4 +1,4 @@
-/* Polimento desktop: melhora fluidez, navegacao e sensacao moderna sem remover conteudo ou animacoes. */
+/* Polimento desktop seguro: melhora sensacao moderna sem interferir no scroll do mouse. */
 
 :root {
   --sw-ease-out: cubic-bezier(.22, 1, .36, 1);
@@ -15,17 +15,8 @@ body {
 }
 
 @media (min-width: 1024px) {
-  /* Scroll mais leve e paginas mais suaves no desktop. */
-  body {
-    overscroll-behavior-y: none;
-  }
-
-  main,
-  section,
-  header,
-  footer {
-    backface-visibility: hidden;
-  }
+  /* IMPORTANTE: nao usar overscroll-behavior, content-visibility ou animation-timeline aqui.
+     Essas regras podem travar/atrapalhar a rolagem do mouse em alguns navegadores. */
 
   section {
     scroll-margin-top: 94px;
@@ -41,8 +32,8 @@ body {
       box-shadow 160ms var(--sw-ease-out),
       backdrop-filter 160ms var(--sw-ease-out),
       transform 160ms var(--sw-ease-out) !important;
-    will-change: background-color, box-shadow, transform;
     transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
   }
 
   header nav a,
@@ -62,12 +53,11 @@ body {
     transform: translateY(-1px);
   }
 
-  /* Cards e blocos interativos com animacao fluida em GPU. */
+  /* Cards e blocos interativos com animacao fluida sem afetar rolagem. */
   .rounded-2xl,
   .rounded-3xl,
   .rounded-\[2rem\],
   .rounded-\[2\.5rem\] {
-    transform: translateZ(0);
     backface-visibility: hidden;
   }
 
@@ -92,38 +82,9 @@ body {
     transition-timing-function: var(--sw-ease-out) !important;
   }
 
-  /* Imagens mais suaves sem causar travamento de scroll. */
   img {
-    transform: translateZ(0);
-    backface-visibility: hidden;
     image-rendering: auto;
-  }
-
-  picture,
-  figure {
-    transform: translateZ(0);
-  }
-
-  /* Seções fora da tela ficam mais leves, preservando layout. */
-  section:not(#inicio) {
-    content-visibility: auto;
-    contain-intrinsic-size: 900px;
-  }
-
-  #inicio,
-  header,
-  footer {
-    content-visibility: visible;
-  }
-
-  /* Melhora fluidez de sombras pesadas. */
-  .shadow-sm,
-  .shadow,
-  .shadow-md,
-  .shadow-lg,
-  .shadow-xl,
-  .shadow-2xl {
-    will-change: transform;
+    backface-visibility: hidden;
   }
 
   /* Botoes mais modernos e responsivos. */
@@ -158,8 +119,8 @@ body {
 
   /* Carrossel das operadoras mais suave no desktop. */
   .sw-operator-track {
-    will-change: transform;
     transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
   }
 
   .sw-operator-item {
@@ -169,49 +130,25 @@ body {
       color 220ms var(--sw-ease-out) !important;
   }
 
-  /* Evita gargalo comum do blur em fundos grandes no desktop. */
+  /* Blur mais controlado para evitar custo alto. */
   .backdrop-blur,
   .backdrop-blur-sm,
   .backdrop-blur-md,
   .backdrop-blur-lg,
   .backdrop-blur-xl {
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
 }
 
 @media (min-width: 1280px) {
-  /* Desktop grande com navegacao mais confortavel. */
   .container {
     scroll-margin-top: 96px;
   }
 
-  #inicio h1 {
-    text-wrap: balance;
-  }
-
+  #inicio h1,
   section h2,
   section h3 {
     text-wrap: balance;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
-  /* Entrada sutil de seções ao rolar, preservando as animações existentes. */
-  section:not(#inicio) {
-    animation: swDesktopSectionFade .55s var(--sw-ease-smooth) both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 22%;
-  }
-
-  @keyframes swDesktopSectionFade {
-    from {
-      opacity: .72;
-      transform: translateY(18px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
   }
 }
