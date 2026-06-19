@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { AlertCircle, Eye, Home, Lock, Save, ShieldCheck, Upload, X } from 'lucide-react';
 
 const CONTENT_PATH = 'artifacts/planos-saude/src/content/siteContent.json';
+const MAX_SAVE_PAYLOAD_BYTES = 3_500_000;
+const MAX_IMAGE_DATA_BYTES = 1_200_000;
+const MAX_ICON_DATA_BYTES = 260_000;
 
 type Status = 'idle' | 'loading' | 'ready' | 'saving' | 'error';
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
@@ -100,6 +103,106 @@ function formatBytes(bytes: number) {
   return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
 
+function byteLength(value: string) {
+  return new Blob([value]).size;
+}
+
+function friendlyApiError(text: string, status: number) {
+  const compact = text.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  if (status === 413 || /request entity|payload too large|body exceeded|request en/i.test(compact)) {
+    return 'A imagem deixou o conteúdo pesado demais para salvar. O painel agora otimiza as próximas imagens automaticamente; remova a imagem atual, envie novamente e salve.';
+  }
+  if (!compact) return 'O servidor não retornou uma resposta válida.';
+  return compact.slice(0, 220);
+}
+
+async function readJsonResponse(response: Response) {
+  const text = await response.text();
+  try {
+    const data = JSON.parse(text);
+    if (!response.ok || !data.ok) throw new Error(data.message || friendlyApiError(text, response.status));
+    return data;
+  } catch (error) {
+    if (error instanceof SyntaxError) throw new Error(friendlyApiError(text, response.status));
+    throw error;
+  }
+}
+
+function readFileAsDataUrl(file: File) {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ''));
+    reader.onerror = () => reject(new Error('Não foi possível ler a imagem.'));
+    reader.readAsDataURL(file);
+  });
+}
+
+function blobToDataUrl(blob: Blob) {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ''));
+    reader.onerror = () => reject(new Error('Não foi possível converter a imagem.'));
+    reader.readAsDataURL(blob);
+  });
+}
+
+function loadImage(dataUrl: string) {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error('Imagem inválida ou corrompida.'));
+    image.src = dataUrl;
+  });
+}
+
+function canvasToBlob(canvas: HTMLCanvasElement, type: string, quality: number) {
+  return new Promise<Blob>((resolve, reject) => {
+    canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error('Não foi possível otimizar a imagem.')), type, quality);
+  });
+}
+
+async function optimizeImageFile(file: File, path: string) {
+  const lowerPath = path.toLowerCase();
+  const isIcon = lowerPath.includes('favicon');
+  const isSvg = file.type.includes('svg') || file.name.toLowerCase().endsWith('.svg');
+  const maxBytes = isIcon ? MAX_ICON_DATA_BYTES : MAX_IMAGE_DATA_BYTES;
+
+  if (isSvg) {
+    if (file.size > maxBytes) throw new Error(`Esse SVG tem ${formatBytes(file.size)}. Use um SVG menor ou cole uma URL da imagem.`);
+    return { dataUrl: await readFileAsDataUrl(file), originalSize: file.size, optimizedSize: file.size };
+  }
+
+  const rawDataUrl = await readFileAsDataUrl(file);
+  const image = await loadImage(rawDataUrl);
+  let maxDimension = isIcon ? 512 : lowerPath.includes('share') ? 1200 : lowerPath.includes('logo') ? 900 : 1600;
+  let quality = isIcon ? 0.86 : 0.82;
+  let bestBlob: Blob | null = null;
+
+  for (let attempt = 0; attempt < 6; attempt += 1) {
+    const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
+    const width = Math.max(1, Math.round(image.naturalWidth * scale));
+    const height = Math.max(1, Math.round(image.naturalHeight * scale));
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const context = canvas.getContext('2d');
+    if (!context) throw new Error('Não foi possível preparar a imagem.');
+    context.clearRect(0, 0, width, height);
+    context.drawImage(image, 0, 0, width, height);
+    const blob = await canvasToBlob(canvas, 'image/webp', quality);
+    bestBlob = blob;
+    if (blob.size <= maxBytes) break;
+    maxDimension = Math.max(320, Math.round(maxDimension * 0.72));
+    quality = Math.max(0.62, quality - 0.07);
+  }
+
+  if (!bestBlob || bestBlob.size > maxBytes) {
+    throw new Error(`A imagem foi otimizada, mas ainda ficou com ${formatBytes(bestBlob?.size || file.size)}. Use uma imagem menor ou cole uma URL externa.`);
+  }
+
+  return { dataUrl: await blobToDataUrl(bestBlob), originalSize: file.size, optimizedSize: bestBlob.size };
+}
+
 export default function Admin() {
   const [password, setPassword] = useState(() => sessionStorage.getItem('admin-password') || '');
   const [authenticated, setAuthenticated] = useState(() => sessionStorage.getItem('admin-auth') === 'true');
@@ -115,8 +218,7 @@ export default function Admin() {
     setMessage('Validando senha...');
     try {
       const response = await fetch('/api/auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password }) });
-      const data = await response.json();
-      if (!response.ok || !data.ok) throw new Error(data.message || 'Senha inválida.');
+      const data = await readJsonResponse(response);
       sessionStorage.setItem('admin-password', password);
       sessionStorage.setItem('admin-auth', 'true');
       setAuthenticated(true);
@@ -132,8 +234,7 @@ export default function Admin() {
     setMessage('Carregando conteúdo atual do site...');
     try {
       const response = await fetch(`/api/admin-file?path=${encodeURIComponent(CONTENT_PATH)}&t=${Date.now()}`, { headers: { 'x-admin-password': activePassword, 'cache-control': 'no-cache' } });
-      const data = await response.json();
-      if (!response.ok || !data.ok) throw new Error(data.message || 'Não foi possível carregar o conteúdo.');
+      const data = await readJsonResponse(response);
       const parsed = normalizeContent(JSON.parse(data.content));
       setContent(parsed);
       setRawJson(JSON.stringify(parsed, null, 2));
@@ -156,9 +257,13 @@ export default function Admin() {
     setMessage('Salvando no GitHub e criando commit...');
     try {
       const nextContent = normalizeContent(activeSection === 'json' ? JSON.parse(rawJson) : content);
-      const response = await fetch(`/api/admin-file?path=${encodeURIComponent(CONTENT_PATH)}`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-admin-password': password }, body: JSON.stringify({ content: JSON.stringify(nextContent, null, 2) + '\n' }) });
-      const data = await response.json();
-      if (!response.ok || !data.ok) throw new Error(data.message || 'Não foi possível salvar.');
+      const contentText = JSON.stringify(nextContent, null, 2) + '\n';
+      const body = JSON.stringify({ content: contentText });
+      if (byteLength(body) > MAX_SAVE_PAYLOAD_BYTES) {
+        throw new Error('O conteúdo ainda está pesado demais para salvar por causa das imagens. Remova a imagem pesada e envie novamente pelo botão Escolher imagem para o painel otimizar automaticamente, ou use uma URL externa.');
+      }
+      const response = await fetch(`/api/admin-file?path=${encodeURIComponent(CONTENT_PATH)}`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-admin-password': password }, body });
+      const data = await readJsonResponse(response);
       setContent(nextContent);
       setRawJson(JSON.stringify(nextContent, null, 2));
       setStatus('ready');
@@ -195,17 +300,29 @@ function JsonEditor({ value, path, onChange }: { value: JsonValue; path: string;
 
 function ImageInput({ value, path, onChange }: { value: string; path: string; onChange: (path: string, value: JsonValue) => void }) {
   const [fileInfo, setFileInfo] = useState('');
+  const [uploadError, setUploadError] = useState('');
+  const [optimizing, setOptimizing] = useState(false);
 
-  function upload(event: React.ChangeEvent<HTMLInputElement>) {
+  async function upload(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (!file) return;
-    setFileInfo(`${file.name} • ${formatBytes(file.size)}`);
-    const reader = new FileReader();
-    reader.onload = () => onChange(path, String(reader.result || ''));
-    reader.readAsDataURL(file);
+    setOptimizing(true);
+    setUploadError('');
+    setFileInfo(`Otimizando ${file.name}...`);
+    try {
+      const optimized = await optimizeImageFile(file, path);
+      onChange(path, optimized.dataUrl);
+      setFileInfo(`${file.name} • ${formatBytes(optimized.originalSize)} → ${formatBytes(optimized.optimizedSize)}`);
+    } catch (error) {
+      setUploadError(error instanceof Error ? error.message : 'Não foi possível otimizar a imagem.');
+      setFileInfo('');
+    } finally {
+      setOptimizing(false);
+      event.target.value = '';
+    }
   }
 
-  return <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-4"><div className="flex flex-wrap items-center gap-3"><label className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-bold text-white"><Upload className="h-4 w-4" /> Escolher imagem<input type="file" accept="image/*" onChange={upload} className="hidden" /></label>{value && <button type="button" onClick={() => { setFileInfo(''); onChange(path, ''); }} className="inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-bold text-red-600"><X className="h-4 w-4" /> Remover</button>}</div><p className="mt-2 text-xs text-slate-500">PNG, JPG, WEBP ou SVG. O upload não bloqueia mais por tamanho, mas imagens muito grandes podem deixar o site e o salvamento mais lentos. Recomendado: até 2 MB.</p>{fileInfo && <p className="mt-2 text-xs font-semibold text-emerald-700">Arquivo carregado: {fileInfo}</p>}{value && <img src={value} alt="Prévia" className="mt-4 max-h-56 w-full rounded-xl border bg-slate-50 object-contain" />}<textarea value={value} onChange={(event) => onChange(path, event.target.value)} placeholder="Ou cole uma URL/base64 de imagem aqui" className="mt-4 w-full min-h-20 rounded-xl border bg-slate-50 p-3 text-xs" /></div>;
+  return <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-4"><div className="flex flex-wrap items-center gap-3"><label className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold text-white ${optimizing ? 'cursor-wait bg-slate-400' : 'cursor-pointer bg-emerald-600'}`}><Upload className="h-4 w-4" /> {optimizing ? 'Otimizando...' : 'Escolher imagem'}<input type="file" accept="image/*" onChange={upload} disabled={optimizing} className="hidden" /></label>{value && <button type="button" onClick={() => { setFileInfo(''); setUploadError(''); onChange(path, ''); }} className="inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-bold text-red-600"><X className="h-4 w-4" /> Remover</button>}</div><p className="mt-2 text-xs text-slate-500">PNG, JPG, WEBP ou SVG. Imagens comuns são otimizadas automaticamente antes de salvar para evitar erro de limite no servidor. Para imagens muito grandes, prefira colar uma URL externa.</p>{fileInfo && <p className="mt-2 text-xs font-semibold text-emerald-700">Arquivo: {fileInfo}</p>}{uploadError && <p className="mt-2 text-xs font-semibold text-red-600">{uploadError}</p>}{value && <img src={value} alt="Prévia" className="mt-4 max-h-56 w-full rounded-xl border bg-slate-50 object-contain" />}<textarea value={value} onChange={(event) => onChange(path, event.target.value)} placeholder="Ou cole uma URL/base64 de imagem aqui" className="mt-4 w-full min-h-20 rounded-xl border bg-slate-50 p-3 text-xs" /></div>;
 }
 
 function photoCard(photo: any) {
