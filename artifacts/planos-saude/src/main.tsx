@@ -4,6 +4,7 @@ import siteContent from "./content/siteContent.json";
 import "./index.css";
 import "./logo-fix.css";
 import "./mobile-stability-fix.css";
+import "./desktop-polish.css";
 
 createRoot(document.getElementById("root")!).render(<App />);
 
