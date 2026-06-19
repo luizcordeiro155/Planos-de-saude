@@ -1,5 +1,5 @@
-/* Correcoes fortes para o topo mobile.
-   Remove clipping, altura exagerada e animacoes que cortavam o titulo no primeiro carregamento. */
+/* Ajustes mobile seguros.
+   Mantem o cabecalho original e corrige apenas o espacamento/renderizacao do bloco inicial. */
 
 html,
 body,
@@ -13,51 +13,14 @@ body,
   background: hsl(var(--background));
 }
 
-header {
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-header img,
-header svg {
-  flex-shrink: 0;
-}
-
-#inicio,
-#inicio *,
-#inicio .container,
-#inicio [class*="container"],
-#inicio .grid,
-#inicio div {
-  clip-path: none !important;
-}
-
 #inicio {
-  overflow: visible !important;
   isolation: isolate;
-  contain: none !important;
-}
-
-#inicio h1,
-#inicio h1 *,
-#inicio p,
-#inicio a,
-#inicio button,
-#inicio .inline-flex,
-#inicio img {
-  opacity: 1 !important;
-  visibility: visible !important;
-  filter: none !important;
-  clip-path: none !important;
-  backface-visibility: hidden;
-  transform-style: flat;
 }
 
 #inicio h1,
 #inicio h1 * {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  overflow: visible !important;
   word-break: normal !important;
   overflow-wrap: normal !important;
   hyphens: none !important;
@@ -73,70 +36,67 @@ header svg {
     min-width: 320px;
   }
 
-  header {
-    min-height: 84px;
-  }
-
-  header .container {
-    min-height: 84px !important;
-  }
-
+  /* Nao mexer no header: deixa a navegacao exatamente como o tema original. */
+  header,
+  header *,
+  header .container,
   header a,
-  header .group {
-    min-width: 0;
-  }
-
-  header img {
-    width: auto;
-    height: auto;
-    max-height: 52px;
-    object-fit: contain;
+  header .group,
+  header img,
+  header svg {
+    transform: none !important;
+    clip-path: none !important;
   }
 
   #inicio {
     min-height: auto !important;
     height: auto !important;
-    padding-top: 1.75rem !important;
-    padding-bottom: 3.25rem !important;
+    padding-top: 6.75rem !important;
+    padding-bottom: 3.75rem !important;
     margin-top: 0 !important;
-    overflow: visible !important;
+    overflow: hidden !important;
   }
 
   #inicio > .container,
-  #inicio .container,
-  #inicio [class*="container"] {
+  #inicio .container {
     min-height: auto !important;
     height: auto !important;
     padding-top: 0 !important;
-    overflow: visible !important;
   }
 
   #inicio .grid {
     display: grid !important;
     grid-template-columns: 1fr !important;
-    gap: 1.35rem !important;
-    align-items: start !important;
+    gap: 2rem !important;
+    align-items: center !important;
     min-height: 0 !important;
     height: auto !important;
-    overflow: visible !important;
   }
 
   #inicio .grid > * {
     min-height: 0 !important;
     height: auto !important;
-    overflow: visible !important;
+  }
+
+  #inicio .inline-flex.rounded-full {
+    display: inline-flex !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    position: static !important;
+    transform: none !important;
   }
 
   #inicio h1 {
     display: block !important;
     min-height: 0 !important;
     height: auto !important;
-    margin-top: 0 !important;
+    margin-top: 0.75rem !important;
     padding-top: 0.35rem !important;
-    padding-bottom: 0.2rem !important;
-    font-size: clamp(2.05rem, 9.6vw, 2.7rem) !important;
-    line-height: 1.12 !important;
-    letter-spacing: -0.038em !important;
+    padding-bottom: 0.35rem !important;
+    font-size: clamp(2.1rem, 10vw, 3rem) !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.04em !important;
     text-align: center !important;
     white-space: normal !important;
     overflow: visible !important;
@@ -147,7 +107,6 @@ header svg {
   #inicio h1 strong,
   #inicio h1 em,
   #inicio h1 div {
-    display: inline !important;
     line-height: inherit !important;
     overflow: visible !important;
     transform: none !important;
@@ -157,59 +116,40 @@ header svg {
     text-align: center !important;
   }
 
-  #inicio .inline-flex.rounded-full {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
   #inicio .flex.flex-col,
   #inicio .flex.flex-col.sm\:flex-row {
     align-items: stretch !important;
   }
 
-  #inicio a {
-    transform: none !important;
-  }
-
   #inicio img {
     display: block;
-    width: 100%;
+    max-width: 100%;
     height: auto;
   }
 
+  /* Evita apenas o flash de entrada do hero no mobile. */
   #inicio [class*="animate"],
   #inicio [style*="animation"],
-  #inicio [style*="transition"],
-  #inicio [style*="transform"] {
-    animation: none !important;
-    transition: none !important;
-    transform: none !important;
-  }
-
-  #inicio .opacity-0,
-  #inicio .translate-y-10,
-  #inicio .translate-y-8,
-  #inicio .translate-y-6,
-  #inicio .-translate-y-10,
-  #inicio .-translate-y-8,
-  #inicio .-translate-y-6 {
-    opacity: 1 !important;
-    transform: none !important;
+  #inicio [style*="transition"] {
+    animation-duration: 0.001s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.001s !important;
+    transition-delay: 0s !important;
   }
 }
 
 @media (max-width: 420px) {
   #inicio {
-    padding-top: 1.25rem !important;
+    padding-top: 6.25rem !important;
   }
 
   #inicio h1 {
-    font-size: clamp(1.95rem, 9vw, 2.45rem) !important;
-    line-height: 1.14 !important;
+    font-size: clamp(2rem, 9.4vw, 2.65rem) !important;
+    line-height: 1.12 !important;
   }
 }
 
-@media (prefers-reduced-motion: reduce), (max-width: 767px) {
+@media (prefers-reduced-motion: reduce) {
   #inicio *,
   header * {
     scroll-behavior: auto !important;
