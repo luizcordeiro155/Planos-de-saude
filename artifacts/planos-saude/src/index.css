@@ -154,3 +154,271 @@
   color: hsl(var(--primary)) !important;
   box-shadow: inset 0 0 0 1px hsl(var(--secondary) / 0.25), 0 8px 22px hsl(var(--secondary) / 0.12);
 }
+
+/* Mobile polish */
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+}
+
+@media (max-width: 767px) {
+  .container {
+    width: 100%;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  header .container {
+    min-height: 64px;
+  }
+
+  header span.font-display {
+    font-size: 1.05rem !important;
+    letter-spacing: -0.02em;
+  }
+
+  header .h-11.w-11 {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+  }
+
+  section {
+    padding-top: 4.5rem !important;
+    padding-bottom: 4.5rem !important;
+  }
+
+  #inicio {
+    padding-top: 7rem !important;
+    padding-bottom: 4.25rem !important;
+  }
+
+  #inicio h1 {
+    font-size: clamp(2.45rem, 11vw, 3.35rem) !important;
+    line-height: 1.04 !important;
+    letter-spacing: -0.055em;
+    max-width: 22rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  h2,
+  section h2,
+  .text-5xl,
+  .md\:text-5xl,
+  .md\:text-6xl,
+  .text-6xl,
+  .md\:text-7xl {
+    font-size: clamp(2rem, 9vw, 2.65rem) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.045em;
+  }
+
+  h3,
+  .text-3xl,
+  .text-4xl {
+    font-size: clamp(1.35rem, 6vw, 1.9rem) !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.025em;
+  }
+
+  p,
+  li {
+    font-size: 0.96rem;
+    line-height: 1.58;
+  }
+
+  .text-lg,
+  .md\:text-xl,
+  .text-xl {
+    font-size: 1rem !important;
+    line-height: 1.55 !important;
+  }
+
+  .text-sm {
+    line-height: 1.45 !important;
+  }
+
+  .tracking-\[0\.2em\],
+  .tracking-widest {
+    letter-spacing: 0.12em !important;
+  }
+
+  #inicio .inline-flex.rounded-full,
+  section .uppercase {
+    font-size: 0.72rem !important;
+  }
+
+  #inicio .flex.flex-col.sm\:flex-row,
+  section .flex.flex-col.sm\:flex-row {
+    width: 100%;
+  }
+
+  #inicio a,
+  section a.bg-secondary,
+  section a.bg-white,
+  section a.bg-primary {
+    width: 100%;
+    min-width: 0 !important;
+    justify-content: center;
+    text-align: center;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  #cotacao .rounded-3xl,
+  #planos .rounded-3xl,
+  #diferenciais .rounded-3xl,
+  .rounded-3xl {
+    border-radius: 1.25rem !important;
+  }
+
+  #cotacao .p-8,
+  #planos .p-7,
+  .p-8,
+  .p-7 {
+    padding: 1.25rem !important;
+  }
+
+  #cotacao input,
+  #cotacao button,
+  #cotacao a {
+    min-height: 3.15rem;
+  }
+
+  #cotacao .grid.grid-cols-3 {
+    grid-template-columns: 1fr !important;
+    gap: 0.65rem !important;
+  }
+
+  #cotacao .grid.grid-cols-3 button {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.78rem 0.9rem !important;
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+    line-height: 1.2 !important;
+    font-size: 0.92rem !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  #cotacao .grid.grid-cols-3 button:nth-child(4) {
+    font-size: 0.9rem !important;
+    font-weight: 800;
+  }
+
+  #cotacao .grid.grid-cols-3 button:nth-child(4)::first-line {
+    font-weight: 800;
+  }
+
+  #planos > div.grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+    margin-top: 2.25rem !important;
+  }
+
+  #planos .rounded-3xl {
+    min-height: auto !important;
+  }
+
+  #planos h3 {
+    font-size: 1.35rem !important;
+  }
+
+  #planos .flex.justify-between {
+    gap: 0.75rem;
+  }
+
+  #planos span.rounded-full {
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-size: 0.68rem !important;
+  }
+
+  #planos a {
+    min-height: 3rem;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #coberturas .grid,
+  #depoimentos .grid,
+  #como-funciona .grid,
+  #diferenciais .grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  #coberturas .rounded-2xl,
+  #depoimentos .rounded-2xl,
+  #faq button {
+    border-radius: 1rem !important;
+  }
+
+  #faq button {
+    padding: 1rem !important;
+  }
+
+  #faq button .text-lg {
+    font-size: 0.98rem !important;
+    line-height: 1.35 !important;
+  }
+
+  #faq .max-w-4xl {
+    margin-top: 2rem !important;
+  }
+
+  footer {
+    padding-top: 3.5rem !important;
+    padding-bottom: 3.5rem !important;
+  }
+
+  footer .grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+
+  footer .mt-14 {
+    margin-top: 2.25rem !important;
+  }
+
+  a[href^="tel:"] {
+    width: 100%;
+    min-width: 0 !important;
+    white-space: nowrap !important;
+    font-size: 1rem !important;
+  }
+}
+
+@media (max-width: 420px) {
+  #inicio h1 {
+    font-size: clamp(2.1rem, 10.5vw, 2.75rem) !important;
+  }
+
+  h2,
+  section h2,
+  .text-5xl,
+  .md\:text-5xl,
+  .md\:text-6xl,
+  .text-6xl,
+  .md\:text-7xl {
+    font-size: clamp(1.85rem, 8.6vw, 2.35rem) !important;
+  }
+
+  #cotacao .grid.grid-cols-3 button {
+    font-size: 0.88rem !important;
+  }
+}
