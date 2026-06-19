@@ -54,42 +54,28 @@
 :root {
   --app-font-sans: 'Inter', sans-serif;
   --app-font-display: 'Poppins', sans-serif;
-  
-  /* Deep Blue/Teal Theme */
-  --background: 210 40% 98%; /* Light grayish blue */
+  --background: 210 40% 98%;
   --foreground: 222 47% 11%;
-  
   --card: 0 0% 100%;
   --card-foreground: 222 47% 11%;
   --card-border: 214 32% 91%;
-  
   --popover: 0 0% 100%;
   --popover-foreground: 222 47% 11%;
   --popover-border: 214 32% 91%;
-  
-  /* Primary: Deep Teal */
-  --primary: 187 100% 25%; 
+  --primary: 187 100% 25%;
   --primary-foreground: 210 40% 98%;
-  
-  /* Secondary: Bright Accent Green */
   --secondary: 142 71% 45%;
   --secondary-foreground: 0 0% 100%;
-  
   --muted: 210 40% 96.1%;
   --muted-foreground: 215.4 16.3% 46.9%;
-  
   --accent: 210 40% 96.1%;
   --accent-foreground: 222.2 47.4% 11.2%;
-  
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 210 40% 98%;
-
   --border: 214.3 31.8% 91.4%;
   --input: 214.3 31.8% 91.4%;
   --ring: 187 100% 25%;
-  
   --radius: 0.75rem;
-
   --primary-border: hsl(var(--primary));
   --secondary-border: hsl(var(--secondary));
   --muted-border: hsl(var(--muted));
@@ -100,32 +86,22 @@
 .dark {
   --background: 222 47% 11%;
   --foreground: 210 40% 98%;
-  
   --card: 222 47% 11%;
   --card-foreground: 210 40% 98%;
   --card-border: 217.2 32.6% 17.5%;
-  
   --popover: 222 47% 11%;
   --popover-foreground: 210 40% 98%;
   --popover-border: 217.2 32.6% 17.5%;
-  
-  /* Primary: Vibrant Teal */
   --primary: 187 90% 40%;
   --primary-foreground: 222 47% 11%;
-  
-  /* Secondary: Bright Accent Green */
   --secondary: 142 71% 45%;
   --secondary-foreground: 222 47% 11%;
-  
   --muted: 217.2 32.6% 17.5%;
   --muted-foreground: 215 20.2% 65.1%;
-  
   --accent: 217.2 32.6% 17.5%;
   --accent-foreground: 210 40% 98%;
-  
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 210 40% 98%;
-  
   --border: 217.2 32.6% 17.5%;
   --input: 217.2 32.6% 17.5%;
   --ring: 187 90% 40%;
@@ -154,4 +130,27 @@
   a[href^="tel:"] svg {
     flex-shrink: 0;
   }
+}
+
+@media (min-width: 768px) {
+  #planos > div.grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+#cotacao .grid.grid-cols-3 {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+@media (min-width: 640px) {
+  #cotacao .grid.grid-cols-3 {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+#cotacao button.border-primary {
+  border-color: hsl(var(--secondary)) !important;
+  background: hsl(var(--secondary) / 0.12) !important;
+  color: hsl(var(--primary)) !important;
+  box-shadow: inset 0 0 0 1px hsl(var(--secondary) / 0.25), 0 8px 22px hsl(var(--secondary) / 0.12);
 }
