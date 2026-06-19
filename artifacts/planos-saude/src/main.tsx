@@ -45,5 +45,27 @@ function renderCommercializedOperators() {
   titleNode.insertAdjacentElement("afterend", wrapper);
 }
 
+function renderLegalFooterLinks() {
+  if (document.querySelector("[data-legal-footer-links]")) return;
+  const footer = document.querySelector("footer");
+  if (!footer) return;
+
+  const bottom = footer.querySelector(".border-t");
+  if (!bottom) return;
+
+  const links = document.createElement("div");
+  links.setAttribute("data-legal-footer-links", "true");
+  links.className = "flex flex-wrap gap-4 text-sm font-semibold text-white/60";
+  links.innerHTML = `
+    <a href="/termos-e-condicoes" class="hover:text-white transition-colors">Termos e Condições</a>
+    <span class="text-white/20">|</span>
+    <a href="/politica-de-privacidade" class="hover:text-white transition-colors">Política de Privacidade</a>
+  `;
+
+  bottom.appendChild(links);
+}
+
 setTimeout(renderCommercializedOperators, 400);
 setTimeout(renderCommercializedOperators, 1200);
+setTimeout(renderLegalFooterLinks, 500);
+setTimeout(renderLegalFooterLinks, 1400);
