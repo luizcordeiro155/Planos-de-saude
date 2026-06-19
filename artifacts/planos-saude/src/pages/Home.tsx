@@ -832,7 +832,7 @@ export default function Home() {
           <div className="text-center max-w-3xl mx-auto mb-16">
             <p className="text-sm font-bold uppercase tracking-widest text-white/50 mb-4">Processo Simples</p>
             <h2 className="text-4xl md:text-5xl font-display font-extrabold mb-6">Como funciona a nossa consultoria</h2>
-            <p className="text-white/60 text-lg">Da primeira mensagem no WhatsApp até o seu plano ativo — simples assim.</p>
+            <p className="text-white/60 text-lg">Da primeira mensagem no WhatsApp até o seu plano ativo simples assim.</p>
           </div>
 
           <div className="grid md:grid-cols-4 gap-8 relative">
