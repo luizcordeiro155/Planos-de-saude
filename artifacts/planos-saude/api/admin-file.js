@@ -53,6 +53,21 @@ function toBase64(value) {
   return Buffer.from(value, 'utf8').toString('base64');
 }
 
+function validateSiteContent(path, content) {
+  if (path !== DEFAULT_PATH) return;
+  const text = String(content || '').trim();
+  if (!text) throw new Error('Protecao ativada: o painel tentou salvar o conteudo vazio. Nada foi alterado no GitHub. Recarregue o painel e tente novamente.');
+  let parsed;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    throw new Error('Protecao ativada: o conteudo do site nao e um JSON valido. Nada foi alterado no GitHub.');
+  }
+  if (!parsed || typeof parsed !== 'object' || !parsed.brand || !parsed.hero || !parsed.plans) {
+    throw new Error('Protecao ativada: o conteudo do site esta incompleto. Nada foi alterado no GitHub.');
+  }
+}
+
 export default async function handler(req, res) {
   try {
     if (!isAuthorized(req)) return send(res, 401, { ok: false, message: 'Senha invalida.' });
@@ -71,6 +86,7 @@ export default async function handler(req, res) {
       const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
       const content = body && body.content;
       if (typeof content !== 'string') return send(res, 400, { ok: false, message: 'Conteudo invalido.' });
+      validateSiteContent(path, content);
 
       const current = await github(`${encodedPath}?ref=${BRANCH}`);
       const saved = await github(encodedPath, {
