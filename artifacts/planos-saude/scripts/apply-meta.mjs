@@ -10,12 +10,33 @@ const brand = content.brand || {};
 const seo = content.seo || {};
 
 const esc = (value = '') => String(value).replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+const siteUrl = seo.siteUrl || 'https://planosdesaude-five.vercel.app/';
+const siteOrigin = (() => {
+  try {
+    return new URL(siteUrl).origin;
+  } catch {
+    return 'https://planosdesaude-five.vercel.app';
+  }
+})();
+
 const abs = (value = '') => {
   const text = String(value || '').trim();
   if (!text) return '';
   if (text.startsWith('http://') || text.startsWith('https://') || text.startsWith('data:')) return text;
-  if (text.startsWith('/')) return `https://planosdesaude-five.vercel.app${text}`;
+  if (text.startsWith('/')) return `${siteOrigin}${text}`;
   return text;
+};
+
+const addCacheBust = (value = '') => {
+  const text = String(value || '').trim();
+  if (!text || text.startsWith('data:')) return text;
+  try {
+    const url = new URL(text);
+    url.searchParams.set('v', String(seo.shareVersion || process.env.VERCEL_GIT_COMMIT_SHA || Date.now()));
+    return url.toString();
+  } catch {
+    return text;
+  }
 };
 
 const siteTitle = seo.browserTitle || seo.shareTitle || `${brand.name || 'SW Seguros'} | Planos de Saúde`;
@@ -23,13 +44,16 @@ const description = seo.description || seo.shareDescription || 'Corretora especi
 const shareTitle = seo.shareTitle || siteTitle;
 const shareDescription = seo.shareDescription || description;
 const favicon = seo.faviconDataUrl || seo.faviconUrl || brand.logoDataUrl || '/favicon.svg';
-const shareImage = abs(seo.shareImageDataUrl || seo.shareImageUrl || content.photos?.hero?.imageDataUrl || brand.logoDataUrl || '');
-const siteUrl = seo.siteUrl || 'https://planosdesaude-five.vercel.app/';
+const rawShareImage = abs(seo.shareImageUrl || seo.shareImageDataUrl || content.photos?.hero?.imageDataUrl || brand.logoDataUrl || '');
+const shareImage = addCacheBust(rawShareImage);
 const themeColor = seo.themeColor || '#007c89';
 
 const imageTags = shareImage ? `
     <meta property="og:image" content="${esc(shareImage)}" />
+    <meta property="og:image:secure_url" content="${esc(shareImage)}" />
     <meta property="og:image:alt" content="${esc(seo.shareImageAlt || shareTitle)}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:image" content="${esc(shareImage)}" />` : '';
 
 const faviconType = String(favicon).startsWith('data:image/png') ? 'image/png' : String(favicon).startsWith('data:image/jpeg') ? 'image/jpeg' : String(favicon).startsWith('data:image/webp') ? 'image/webp' : 'image/svg+xml';
@@ -68,3 +92,4 @@ const html = `<!DOCTYPE html>
 
 fs.writeFileSync(indexPath, html, 'utf8');
 console.log(`SEO metadata applied: ${siteTitle}`);
+console.log(`Share image: ${shareImage || 'none'}`);
