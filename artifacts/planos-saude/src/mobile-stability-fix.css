@@ -1,0 +1,155 @@
+/* Correcoes de estabilidade visual no primeiro carregamento mobile.
+   Evita flash quebrado do inicio do site quando fonte/imagens/animações ainda estão estabilizando. */
+
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+#root {
+  background: hsl(var(--background));
+}
+
+header {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  contain: layout paint;
+}
+
+header img,
+header svg {
+  flex-shrink: 0;
+}
+
+#inicio {
+  overflow: hidden;
+  isolation: isolate;
+  contain: layout paint;
+}
+
+#inicio h1,
+#inicio p,
+#inicio a,
+#inicio button,
+#inicio .inline-flex,
+#inicio img {
+  opacity: 1 !important;
+  visibility: visible !important;
+  filter: none !important;
+  clip-path: none !important;
+  backface-visibility: hidden;
+  transform-style: flat;
+}
+
+#inicio h1,
+#inicio h1 * {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow: visible !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  hyphens: none !important;
+}
+
+@media (max-width: 767px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  body {
+    min-width: 320px;
+  }
+
+  header {
+    min-height: 86px;
+  }
+
+  header .container {
+    min-height: 86px !important;
+  }
+
+  header a,
+  header .group {
+    min-width: 0;
+  }
+
+  header img {
+    width: auto;
+    height: auto;
+    max-height: 52px;
+    object-fit: contain;
+  }
+
+  #inicio {
+    min-height: auto !important;
+    padding-top: 6.25rem !important;
+    padding-bottom: 3.5rem !important;
+  }
+
+  #inicio .container,
+  #inicio [class*="container"] {
+    min-height: auto !important;
+  }
+
+  #inicio .grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+    align-items: center !important;
+  }
+
+  #inicio h1 {
+    display: block !important;
+    min-height: 0 !important;
+    margin-top: 0 !important;
+    font-size: clamp(2.25rem, 10.5vw, 3.05rem) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.045em !important;
+    text-align: center !important;
+    white-space: normal !important;
+  }
+
+  #inicio p {
+    text-align: center !important;
+  }
+
+  #inicio .inline-flex.rounded-full {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #inicio .flex.flex-col,
+  #inicio .flex.flex-col.sm\:flex-row {
+    align-items: stretch !important;
+  }
+
+  #inicio a {
+    transform: translateZ(0);
+  }
+
+  #inicio img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  #inicio [class*="animate"],
+  #inicio [style*="animation"],
+  #inicio [style*="transition"] {
+    animation-duration: 0.001s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.001s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce), (max-width: 767px) {
+  #inicio *,
+  header * {
+    scroll-behavior: auto !important;
+  }
+}
