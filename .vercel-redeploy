@@ -1,2 +1,2 @@
-redeploy: 2026-06-18T22:55:00Z
-reason: trigger Vercel after root dist output fix
+redeploy: 2026-06-19T00:00:00Z
+reason: force Vercel redeploy after admin updates
