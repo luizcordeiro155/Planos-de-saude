@@ -1,5 +1,5 @@
 /* Ajustes de estabilidade e performance sem remover as animacoes do site.
-   Header leve no mobile: transparente no topo e branco rapidamente ao rolar. */
+   Header leve no mobile e hero com respiro correto. */
 
 html,
 body,
@@ -29,7 +29,7 @@ header svg {
 
 #inicio {
   isolation: isolate;
-  scroll-margin-top: 88px;
+  scroll-margin-top: 84px;
 }
 
 #inicio h1,
@@ -75,11 +75,11 @@ header svg {
     min-width: 320px;
   }
 
-  /* Deixa a barra como era: leve/transparente no topo, sem ocupar demais o site. */
+  /* Header mais fino e transparente no topo. */
   header,
   header.sticky,
   header.fixed {
-    min-height: 76px !important;
+    min-height: 64px !important;
     background: rgba(255, 255, 255, 0) !important;
     border-bottom-color: transparent !important;
     box-shadow: none !important;
@@ -95,17 +95,17 @@ header svg {
   header.bg-background,
   header.bg-white,
   header[class*="shadow"] {
-    background: rgba(255, 255, 255, 0.96) !important;
-    border-bottom-color: rgba(226, 232, 240, 0.75) !important;
-    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.055) !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
+    background: rgba(255, 255, 255, 0.94) !important;
+    border-bottom-color: rgba(226, 232, 240, 0.65) !important;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.045) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
   }
 
   header .container {
-    min-height: 76px !important;
-    padding-top: 0.55rem !important;
-    padding-bottom: 0.55rem !important;
+    min-height: 64px !important;
+    padding-top: 0.35rem !important;
+    padding-bottom: 0.35rem !important;
   }
 
   header a,
@@ -116,14 +116,15 @@ header svg {
   header img {
     width: auto;
     height: auto;
-    max-height: 54px;
+    max-height: 46px;
     object-fit: contain;
   }
 
+  /* Desce o conteudo do site no mobile para nao colar no header. */
   #inicio {
     min-height: auto !important;
     height: auto !important;
-    padding-top: 5.9rem !important;
+    padding-top: 7.3rem !important;
     padding-bottom: 3.75rem !important;
     margin-top: 0 !important;
     overflow: hidden !important;
@@ -164,7 +165,7 @@ header svg {
     display: block !important;
     min-height: 0 !important;
     height: auto !important;
-    margin-top: 0.55rem !important;
+    margin-top: 0.85rem !important;
     padding-top: 0.35rem !important;
     padding-bottom: 0.35rem !important;
     font-size: clamp(2.1rem, 10vw, 3rem) !important;
@@ -211,15 +212,19 @@ header svg {
   header,
   header.sticky,
   header.fixed {
-    min-height: 72px !important;
+    min-height: 60px !important;
   }
 
   header .container {
-    min-height: 72px !important;
+    min-height: 60px !important;
+  }
+
+  header img {
+    max-height: 43px;
   }
 
   #inicio {
-    padding-top: 5.55rem !important;
+    padding-top: 7rem !important;
   }
 
   #inicio h1 {
