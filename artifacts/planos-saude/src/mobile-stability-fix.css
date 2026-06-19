@@ -1,5 +1,5 @@
 /* Ajustes de estabilidade e performance sem remover as animacoes do site.
-   Header leve no mobile e hero com respiro correto. */
+   Header leve no mobile, hero com respiro correto e desktop mais próximo do topo. */
 
 html,
 body,
@@ -46,22 +46,37 @@ header svg {
     scroll-behavior: smooth;
   }
 
-  section {
-    content-visibility: auto;
-    contain-intrinsic-size: 1px 820px;
-  }
-
-  header,
-  #inicio,
-  footer {
-    content-visibility: visible;
-    contain-intrinsic-size: auto;
-  }
-
+  /* Nao usar content-visibility aqui: em alguns navegadores atrapalha scroll/altura. */
   .shadow-2xl,
   .shadow-xl,
   .shadow-lg {
     backface-visibility: hidden;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* Aproxima o conteudo inicial do cabeçalho no desktop. */
+  #inicio {
+    padding-top: 5.5rem !important;
+  }
+
+  #inicio > .container,
+  #inicio .container {
+    padding-top: 0 !important;
+  }
+
+  #inicio .grid {
+    align-items: center !important;
+  }
+
+  #inicio .inline-flex.rounded-full {
+    margin-bottom: 1.75rem !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  #inicio {
+    padding-top: 5rem !important;
   }
 }
 
