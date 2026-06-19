@@ -32,6 +32,10 @@ function githubToken() {
   return key;
 }
 
+function deployHookUrl() {
+  return process.env.VERCEL_DEPLOY_HOOK_URL || process.env.DEPLOY_HOOK_URL || process.env.VERCEL_HOOK_URL || '';
+}
+
 async function github(path, init) {
   const response = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}`, {
     ...init,
@@ -48,6 +52,30 @@ async function github(path, init) {
   return data;
 }
 
+async function triggerVercelDeploy() {
+  const hook = deployHookUrl();
+  if (!hook) {
+    return { ok: false, configured: false, message: 'Deploy Hook da Vercel nao configurado.' };
+  }
+
+  try {
+    const response = await fetch(hook, { method: 'POST' });
+    const text = await response.text().catch(() => '');
+    return {
+      ok: response.ok,
+      configured: true,
+      status: response.status,
+      message: response.ok ? 'Deploy da Vercel disparado pelo hook.' : `Hook da Vercel respondeu ${response.status}: ${text.slice(0, 180)}`
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      configured: true,
+      message: error instanceof Error ? error.message : 'Erro ao disparar deploy hook da Vercel.'
+    };
+  }
+}
+
 function toUtf8(value) {
   return Buffer.from(value, 'base64').toString('utf8');
 }
@@ -60,8 +88,6 @@ async function getFileContent(file) {
   const encoded = String(file.content || '').replace(/\n/g, '').trim();
   if (encoded) return toUtf8(encoded);
 
-  // Para arquivos maiores que ~1 MB, a Contents API do GitHub retorna content vazio.
-  // Nesses casos usamos download_url/raw para o admin nao quebrar com JSON vazio.
   if (file.download_url) {
     const raw = await fetch(file.download_url, {
       headers: { authorization: `Bearer ${githubToken()}` }
@@ -117,7 +143,16 @@ export default async function handler(req, res) {
         body: JSON.stringify({ message: `Admin: atualizar ${path}`, content: toBase64(content), sha: current.sha, branch: BRANCH })
       });
 
-      return send(res, 200, { ok: true, path, commit: saved && saved.commit && saved.commit.sha, message: 'Alteracao salva no GitHub. A Vercel deve iniciar um novo deploy automaticamente.' });
+      const deploy = await triggerVercelDeploy();
+      const deployMessage = deploy.configured ? deploy.message : 'Configure VERCEL_DEPLOY_HOOK_URL na Vercel para disparar deploy automaticamente alem do commit.';
+
+      return send(res, 200, {
+        ok: true,
+        path,
+        commit: saved && saved.commit && saved.commit.sha,
+        deploy,
+        message: `Alteracao salva no GitHub. ${deployMessage}`
+      });
     }
 
     return send(res, 405, { ok: false, message: 'Metodo nao permitido.' });
