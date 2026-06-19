@@ -1130,7 +1130,7 @@ export default function Home() {
 
           <div className="pt-8 border-t border-background/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-background/30">
             <span>© {new Date().getFullYear()} Rota Seguros. Todos os direitos reservados.</span>
-            <span>Corretora de Planos de Saúde — Belo Horizonte, MG</span>
+            <span>Corretora de Planos de Saúde - Belo Horizonte, MG</span>
           </div>
         </div>
       </footer>
