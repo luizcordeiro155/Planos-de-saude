@@ -3,6 +3,7 @@ import App from "./App";
 import siteContent from "./content/siteContent.json";
 import "./index.css";
 import "./logo-fix.css";
+import "./mobile-stability-fix.css";
 
 createRoot(document.getElementById("root")!).render(<App />);
 
